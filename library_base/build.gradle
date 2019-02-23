@@ -1,0 +1,41 @@
+apply plugin: 'com.android.library'
+
+android {
+
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    defaultConfig {
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //公用的support相关库在base中依赖
+    api rootProject.ext.dependencies["design"]
+    api rootProject.ext.dependencies["appcompat-v7"]
+    //================第三方库============
+    api rootProject.ext.dependencies["okhttp"]
+    api rootProject.ext.dependencies["retrofit"]
+    api rootProject.ext.dependencies["adapter-rxjava"]
+    api rootProject.ext.dependencies["converter"]
+    //阿里路由框架
+    api rootProject.ext.dependencies["arouter-api"]
+    //依赖数据层
+//    if (isBuildModule.toBoolean()) {
+//        implementation project(':library_db')
+//    }else{
+//        api project(':FpcLibsProject:library_db')
+//    }
+//    implementation project(':library_db')
+}
