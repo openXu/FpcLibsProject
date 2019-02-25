@@ -9,8 +9,8 @@ import com.fzy.libs.router.RouterActivityPath;
 import com.fzy.mbase.presenter.LoginPersenter;
 
 import androidx.databinding.DataBindingUtil;
-import om.fzy.mbase.R;
-import om.fzy.mbase.databinding.ActivityLoginBinding;
+import com.fzy.mbase.R;
+import com.fzy.mbase.databinding.ActivityLoginBinding;
 // 在支持路由的页面上添加注解(必选)
 // 这里的路径需要注意的是至少需要有两级，/xx/xx
 @Route(path = RouterActivityPath.Common.PAGE_LOGIN)

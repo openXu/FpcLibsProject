@@ -1,6 +1,7 @@
 ext {
 
     android = [
+            applicationId : "com.fzy.module",
             javaVersion : JavaVersion.VERSION_1_8,
             compileSdkVersion: 28,
             targetSdkVersion: 28,

@@ -1,12 +1,12 @@
 package com.fzy.libs.router;
 
 /**
- * 用于组件开发中，ARouter单Activity跳转的统一路径注册
- * 在这里注册添加路由路径，需要清楚的写好注释，标明功能界面
- * Created by goldze on 2018/6/21
+ * Author: openXu
+ * Time: 2019/2/25 11:14
+ * class: RouterActivityPath
+ * Description: ARouter路由路径注册
  */
 public class RouterActivityPath {
-
     /**通用模块*/
     public static class Common {
         private static final String COMMON = "/common";
@@ -20,5 +20,4 @@ public class RouterActivityPath {
         /*登录界面*/
         public static final String PAGE_TASK = INSPECT + "/Task";
     }
-
 }

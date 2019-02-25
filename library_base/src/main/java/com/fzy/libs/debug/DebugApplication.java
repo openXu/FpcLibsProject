@@ -1,7 +1,6 @@
 package com.fzy.libs.debug;
 
 import com.fzy.libs.base.BaseApplication;
-import com.fzy.libs.config.BaseLibInitLogic;
 
 
 /**
@@ -15,9 +14,4 @@ public class DebugApplication extends BaseApplication {
         super.onCreate();
     }
 
-    @Override
-    protected void initLogic() {
-        //初始化基础模块
-        registerApplicationLogic(BaseLibInitLogic.class);
-    }
 }

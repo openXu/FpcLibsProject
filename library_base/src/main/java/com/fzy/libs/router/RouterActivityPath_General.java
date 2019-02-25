@@ -1,7 +1,10 @@
 package com.fzy.libs.router;
 
 /**
- * 一般单位版app路由
+ * Author: openXu
+ * Time: 2019/2/25 11:14
+ * class: RouterActivityPath
+ * Description: 一般单位版app路由
  */
 public class RouterActivityPath_General {
 

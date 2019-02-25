@@ -1,0 +1,10 @@
+<resources>
+
+    <attr name="text" format="string" />
+
+    <declare-styleable name="TextView">
+        <!--require ReplyCommand<String> -->
+        <attr name="text"/>
+    </declare-styleable>
+
+</resources>

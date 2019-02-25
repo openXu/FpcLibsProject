@@ -1,3 +1,4 @@
+/*所有希望可以单独运行的库模块（module_xxx）通用gradle配置*/
 if (isBuildModule.toBoolean()) {
     apply plugin: 'com.android.application'  //作为独立App应用运行
 } else {
@@ -6,6 +7,10 @@ if (isBuildModule.toBoolean()) {
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
     defaultConfig {
+        //如果是独立模块，则使用当前组件的包名 com.fzy.module.module_xxx
+        if (isBuildModule.toBoolean()) {
+            applicationId rootProject.ext.android.applicationId + "." + project.getName()
+        }
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
         versionCode rootProject.ext.android.versionCode
@@ -56,6 +61,12 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //依赖基础库
+    if (isBuildModule.toBoolean()) {
+        implementation project(':library_base')
+    }else{
+        implementation project(':FpcLibsProject:library_base')
+    }
     //组件中依赖阿里路由编译框架
     annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
 }

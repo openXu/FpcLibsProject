@@ -1,9 +1,6 @@
 package com.fzy.mbase.entry;
 
-
-import androidx.databinding.BaseObservable;
-
-public class User extends BaseObservable {
+public class User{
 
     private String userName;
     private String password;

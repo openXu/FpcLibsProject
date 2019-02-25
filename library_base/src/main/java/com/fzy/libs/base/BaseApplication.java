@@ -3,6 +3,9 @@ package com.fzy.libs.base;
 import android.app.Application;
 import android.content.res.Configuration;
 
+import com.fzy.libs.app_init.BaseAppLogic;
+import com.fzy.libs.app_init.ModuleInitManager;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,24 +13,20 @@ import java.util.List;
  * Author: openXu
  * Time: 2019/2/23 14:49
  * class: BaseApplication
- * Description: Application请继承该基类，并实现initLogic()方法注册各module的初始化类（? extends BaseAppLogic）
+ * Description: Application请继承该基类
  */
 public abstract class BaseApplication extends Application {
 
+    /**各module初始化类集合*/
     private List<Class<? extends BaseAppLogic>> logicList = new ArrayList<>();
     private List<BaseAppLogic> logicClassList = new ArrayList<>();
 
     @Override
     public void onCreate() {
         super.onCreate();
-        initLogic();
+        //添加模块初始化类
+        logicList.addAll(ModuleInitManager.getInstance().getInitLogics());
         logicCreate();
-    }
-
-    protected abstract void initLogic();   //主module的App；Application调用
-
-    protected void registerApplicationLogic(Class<? extends BaseAppLogic> logicClass){
-        logicList.add(logicClass);
     }
 
     private void logicCreate(){
