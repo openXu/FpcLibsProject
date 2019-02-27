@@ -14,6 +14,15 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            buildConfigField "String", "baseUrl", rootProject.ext.appconfig.baseUrl
+        }
+
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            buildConfigField "String", "baseUrl", rootProject.ext.appconfig.baseUrl
         }
     }
 
@@ -43,16 +52,29 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    //公用的support相关库在base中依赖
+    //support
     api rootProject.ext.dependencies["design"]
+    api rootProject.ext.dependencies["support-v4"]
     api rootProject.ext.dependencies["appcompat-v7"]
+    api rootProject.ext.dependencies["recyclerview-v7"]
+    //Google AAC
+    api rootProject.ext.dependencies["lifecycle-extensions"]
+    annotationProcessor rootProject.ext.dependencies["lifecycle-compiler"]
     //================第三方库============
-    api rootProject.ext.dependencies["okhttp"]
+//    api rootProject.ext.dependencies["okhttp"]
+    api rootProject.ext.dependencies["rxjava"]
+    api rootProject.ext.dependencies["rxandroid"]
     api rootProject.ext.dependencies["retrofit"]
     api rootProject.ext.dependencies["adapter-rxjava"]
     api rootProject.ext.dependencies["converter"]
+    //glide图片加载库
+    api (rootProject.ext.dependencies.glide){
+        exclude group: 'com.android.support'
+    }
+    annotationProcessor rootProject.ext.dependencies["glide-compiler"]
     //阿里路由框架
     api rootProject.ext.dependencies["arouter-api"]
+
     //依赖数据层
 //    if (isBuildModule.toBoolean()) {
 //        implementation project(':library_db')

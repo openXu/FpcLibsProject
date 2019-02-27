@@ -4,7 +4,7 @@ import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.fzy.libs.BuildConfig;
-import com.fzy.libs.http.HttpClient;
+import com.fzy.libs.http.NetworkManager;
 
 /**
  * Author: openXu
@@ -19,7 +19,7 @@ public class BaseLibInitLogic extends BaseAppLogic {
         super.onCreate();
 
         //网络工具初始化
-        HttpClient.getInstance().init(mApplication);
+        NetworkManager.init(mApplication);
 
         //初始化阿里路由框架
         if (BuildConfig.DEBUG) {           // 这两行必须写在init之前，否则这些配置在init过程中将无效

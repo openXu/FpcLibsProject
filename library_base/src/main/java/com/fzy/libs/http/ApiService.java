@@ -2,22 +2,22 @@ package com.fzy.libs.http;
 
 import java.util.Map;
 
+import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
-import rx.Observable;
 
 public interface ApiService {
 
 
     /*
      * etrofit不支持二次泛型 https://github.com/square/retrofit/issues/2012
-     * 报错Method return type must not include a type variable or wildcard: retrofit2.Call<com.fpc.net.Response<T>>
+     * 报错Method return type must not include a type variable or wildcard: retrofit2.Call<com.fpc.net.NetResponse<T>>
      */
 //    @GET
-//    Call<Response<T>> doGet(@Url String url, @QueryMap Map<String, String> map);
+//    Call<NetResponse<T>> doGet(@Url String url, @QueryMap Map<String, String> map);
 
 
     /*
@@ -28,7 +28,7 @@ public interface ApiService {
     Call<ResponseBody> doGet(@Url String url, @QueryMap Map<String, String> map);
 
     @GET
-    Observable<Response> rxGet(@Url String url, @QueryMap Map<String, String> map);
+    Observable<OneSentence> rxGet(@Url String url, @QueryMap Map<String, String> map);
 
 
 }

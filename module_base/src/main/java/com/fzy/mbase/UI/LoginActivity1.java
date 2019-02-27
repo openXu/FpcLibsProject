@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.fzy.libs.base.BaseActivity;
+import com.fzy.libs.base.BaseActivity1;
 import com.fzy.libs.router.RouterActivityPath;
 import com.fzy.mbase.presenter.LoginPersenter;
 
@@ -14,7 +14,7 @@ import com.fzy.mbase.databinding.ActivityLoginBinding;
 // 在支持路由的页面上添加注解(必选)
 // 这里的路径需要注意的是至少需要有两级，/xx/xx
 @Route(path = RouterActivityPath.Common.PAGE_LOGIN)
-public class LoginActivity extends BaseActivity {
+public class LoginActivity1 extends BaseActivity1 {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

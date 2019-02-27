@@ -1,6 +1,6 @@
 package com.fzy.libs.http;
 
-public class Response<T> {
+public class NetResponse<T> {
 
     private int code;
     private T data;
