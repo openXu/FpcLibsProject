@@ -6,11 +6,15 @@ import android.util.Log;
 
 import com.fzy.libs.BuildConfig;
 import com.fzy.libs.base.BaseApplication;
+import com.fzy.libs.http.interceptor.LoggerInterceptor;
 import com.fzy.libs.http.interceptor.ResponseInterceptor;
+import com.fzy.libs.http.interceptor.RetryInterceptor;
 import com.fzy.libs.utils.FLog;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.net.URLDecoder;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -21,6 +25,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -51,12 +56,29 @@ public class NetworkManager {
        return SingletonHolder.INSTANCE;
    }
     private NetworkManager(){
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        HttpLoggingInterceptor interceptor1 = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+            @Override
+            public void log(String message) {
+                try {
+                    String text = URLDecoder.decode(message, "utf-8");
+                    Log.e("OKHttp-----", text);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                    Log.e("OKHttp-----", message);
+                }
+            }
+        });
         // 初始化okhttp
-        ResponseInterceptor interceptor = new ResponseInterceptor();
         OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(10, TimeUnit.SECONDS)
-                .addInterceptor(interceptor)
+//                .retryOnConnectionFailure(true)//默认重试一次，若需要重试N次，则要实现拦截器。
+                .connectTimeout(1, TimeUnit.SECONDS)
+                .readTimeout(1, TimeUnit.SECONDS)
+                .writeTimeout(1, TimeUnit.SECONDS)
+//                .addInterceptor(new ResponseInterceptor())
+                .addInterceptor(new LoggerInterceptor())
+                .addInterceptor(new HttpLoggingInterceptor())
+                .addInterceptor(new RetryInterceptor(1))  //重试
                 .build();
 
         // 初始化Retrofit
@@ -74,11 +96,13 @@ public class NetworkManager {
         Call<ResponseBody> call = apiService.doGet(url, params);
         //4. 发送网络请求(异步)
         final Type type = callBack.getClass().getGenericSuperclass();
-        Log.e(TAG, "-----------------"+type);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
-                Log.d(TAG, "Request onResponse：" + call.request());
+                FLog.e("Request onResponse：" + response);
+                FLog.e("Request onResponse：" + response.code());
+                FLog.e("Request onResponse：" + response.body());
+                FLog.e("Request onResponse：" + response.message());
                 if (response.code() == 200) {
                     try {
                         String result = response.body().string();
@@ -103,33 +127,12 @@ public class NetworkManager {
     }
 
     public void doGet1(String url, Map<String, String> params, final HttpCallBack<OneSentence> callBack) {
-        Observable<OneSentence> observable = apiService.rxGet(url, params);
+        Observable<ResponseBody> observable = apiService.rxGet(url, params);
         observable
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<OneSentence>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        FLog.i("网络请求onSubscribe"+d);
-                    }
-
-                    @Override
-                    public void onNext(OneSentence data) {
-                        FLog.i("网络请求onNext"+data);
-                        callBack.onSeccuce(data);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        FLog.i("网络请求onError"+e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        FLog.i("网络请求onComplete");
-                    }
-                });
+                .subscribe();
     }
 
 }

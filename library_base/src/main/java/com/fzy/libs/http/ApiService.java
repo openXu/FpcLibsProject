@@ -28,7 +28,7 @@ public interface ApiService {
     Call<ResponseBody> doGet(@Url String url, @QueryMap Map<String, String> map);
 
     @GET
-    Observable<OneSentence> rxGet(@Url String url, @QueryMap Map<String, String> map);
+    Observable<ResponseBody> rxGet(@Url String url, @QueryMap Map<String, String> map);
 
 
 }

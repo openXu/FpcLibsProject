@@ -33,7 +33,21 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
             startActivity(RouterActivityPath_Test.PAGE_MAIN);
         });
         binding.btnLogin.setOnClickListener(v->{
-            viewModel.onClick();
+            String name = binding.etName.getText().toString().trim();
+            String psw = binding.etPsw.getText().toString().trim();
+            viewModel.login(name, psw);
+            if(name.length()>10 || name.length()<3){
+                binding.tlName.setErrorEnabled(true);
+                binding.tlName.setError("用户名长度至少为3，最大为10");
+            }else if(psw.length()>8 || psw.length()<5){
+                binding.tlPsw.setErrorEnabled(true);
+                binding.tlPsw.setError("密码长度至少为5，最大为8");
+            }else{
+                binding.tlName.setErrorEnabled(false);
+                binding.tlPsw.setErrorEnabled(false);
+//                viewModel.login(name, psw);
+            }
+
         });
     }
 }

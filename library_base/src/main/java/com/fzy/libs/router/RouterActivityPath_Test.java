@@ -11,5 +11,6 @@ public class RouterActivityPath_Test {
     private static final String Test = "/test";
     /*主界面*/
     public static final String PAGE_MAIN = Test +"/main";
+    public static final String PAGE_MVVMTEST = Test +"/mvvmTest";
 
 }

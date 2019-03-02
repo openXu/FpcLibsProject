@@ -45,7 +45,7 @@ public class FToast {
 
     private static final int textSizeDef = 14; // in SP
     private static final boolean tintIconDef = true;
-    private static final boolean allowQueueDef = true;
+    private static final boolean allowQueueDef = false;
 
     private static int textSize = textSizeDef; // in SP
 
