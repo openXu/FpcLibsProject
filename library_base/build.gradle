@@ -75,6 +75,10 @@ dependencies {
     //阿里路由框架
     api rootProject.ext.dependencies["arouter-api"]
 
+    //Dialog
+//    api 'com.afollestad.material-dialogs:core:2.0.3'
+    api 'com.afollestad.material-dialogs:core:0.9.6.0'
+
     //依赖数据层
 //    if (isBuildModule.toBoolean()) {
 //        implementation project(':library_db')

@@ -1,6 +1,7 @@
 package com.fzy.libs.base;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.res.Configuration;
 
 import com.fzy.libs.app_init.BaseAppLogic;
@@ -21,12 +22,19 @@ public abstract class BaseApplication extends Application {
     private List<Class<? extends BaseAppLogic>> logicList = new ArrayList<>();
     private List<BaseAppLogic> logicClassList = new ArrayList<>();
 
+    private static Application application;
+
     @Override
     public void onCreate() {
         super.onCreate();
+        application = this;
         //添加模块初始化类
         logicList.addAll(ModuleInitManager.getInstance().getInitLogics());
         logicCreate();
+    }
+
+    public static Application getApplication(){
+        return application;
     }
 
     private void logicCreate(){

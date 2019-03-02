@@ -26,6 +26,8 @@ android {
         sourceCompatibility rootProject.ext.android.javaVersion
         targetCompatibility rootProject.ext.android.javaVersion
     }
+    //统一资源前缀，规范资源引用 module_xxx
+    resourcePrefix project.getName()+"_"
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']

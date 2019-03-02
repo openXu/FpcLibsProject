@@ -1,12 +1,13 @@
 package com.fzy.libs.http;
 
-import android.app.Application;
+import android.content.Context;
 import android.util.Log;
 
 
 import com.fzy.libs.BuildConfig;
+import com.fzy.libs.base.BaseApplication;
 import com.fzy.libs.http.interceptor.ResponseInterceptor;
-import com.fzy.libs.utils.FzyLog;
+import com.fzy.libs.utils.FLog;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -30,13 +31,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkManager {
     private String TAG = "NetworkManager";
 
-    private static Application application;
     private Retrofit retrofit;
     private ApiService apiService;
 
-
-    public static void init(Application context){
-        application = context;
+    private static Context context;
+    static {
+        context = BaseApplication.getApplication().getApplicationContext();
     }
 
     private static class SingletonHolder{
@@ -111,23 +111,23 @@ public class NetworkManager {
                 .subscribe(new Observer<OneSentence>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-                        FzyLog.i("网络请求onSubscribe"+d);
+                        FLog.i("网络请求onSubscribe"+d);
                     }
 
                     @Override
                     public void onNext(OneSentence data) {
-                        FzyLog.i("网络请求onNext"+data);
+                        FLog.i("网络请求onNext"+data);
                         callBack.onSeccuce(data);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        FzyLog.i("网络请求onError"+e);
+                        FLog.i("网络请求onError"+e);
                     }
 
                     @Override
                     public void onComplete() {
-                        FzyLog.i("网络请求onComplete");
+                        FLog.i("网络请求onComplete");
                     }
                 });
     }

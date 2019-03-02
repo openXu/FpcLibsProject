@@ -4,6 +4,7 @@ import android.text.Spanned;
 import android.widget.TextView;
 
 import androidx.databinding.BindingAdapter;
+import androidx.lifecycle.LiveData;
 
 /**
  * Author: openXu
@@ -14,19 +15,9 @@ import androidx.databinding.BindingAdapter;
 public class TextViewBindingAdapter {
 
     @BindingAdapter("text")
-    public static void setText(TextView view, CharSequence text) {
-        final CharSequence oldText = view.getText();
-        if (text == oldText || (text == null && oldText.length() == 0)) {
-            return;
-        }
-        if (text instanceof Spanned) {
-            if (text.equals(oldText)) {
-                return; // No change in the spans, so don't set anything.
-            }
-        } else if (!haveContentsChanged(text, oldText)) {
-            return; // No content changes, so don't set anything.
-        }
-        view.setText(text+"  新适配");
+    public static void setText(TextView view, LiveData data) {
+//        final CharSequence oldText = view.getText();
+//        view.setText(text+"  新适配");
     }
 
     private static boolean haveContentsChanged(CharSequence str1, CharSequence str2) {

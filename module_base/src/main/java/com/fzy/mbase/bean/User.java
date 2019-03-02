@@ -1,4 +1,4 @@
-package com.fzy.mbase.entry;
+package com.fzy.mbase.bean;
 
 public class User{
 

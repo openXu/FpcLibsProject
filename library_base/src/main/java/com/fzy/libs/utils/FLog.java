@@ -10,10 +10,10 @@ import org.json.JSONObject;
 /**
  * Author: openXu
  * Time: 2019/2/26 11:45
- * class: FzyLog
+ * class: FLog
  * Description:
  */
-public class FzyLog {
+public class FLog {
 
 
     private static boolean IS_SHOW_LOG = true;
@@ -129,11 +129,14 @@ public class FzyLog {
         String methodName = stackTrace[index].getMethodName();
         int lineNumber = stackTrace[index].getLineNumber();
 
-        String tag = (tagStr == null ? className : tagStr);
+//        String tag = (tagStr == null ? className : tagStr);
+        String tag = tagStr == null ? "FZY" : tagStr;
         methodName = methodName.substring(0, 1).toUpperCase() + methodName.substring(1);
 
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("[ (").append(className).append(":").append(lineNumber).append(")#").append(methodName).append(" ] ");
+        //[ (类名 ： 行号)#方法名]  内容
+//        stringBuilder.append("[(").append(className).append(":").append(lineNumber).append(")#").append(methodName).append("] ");
+        stringBuilder.append("(").append(className).append(":").append(lineNumber).append(") ");
 
         if (objectMsg == null) {
             msg = "Log with null Object";

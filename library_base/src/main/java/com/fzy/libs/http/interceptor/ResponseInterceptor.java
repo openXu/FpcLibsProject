@@ -1,6 +1,6 @@
 package com.fzy.libs.http.interceptor;
 
-import com.fzy.libs.utils.FzyLog;
+import com.fzy.libs.utils.FLog;
 
 import java.io.IOException;
 
@@ -18,18 +18,18 @@ public class ResponseInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request originalRequest = chain.request();
-        FzyLog.i("okhttp拦截器拦截到请求:"+originalRequest.url());
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        FLog.i("okhttp拦截器拦截到请求:"+originalRequest.url());
+//        try {
+//            Thread.sleep(5000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 //        Request compressedRequest = originalRequest.newBuilder()
 //                .header("Content-Encoding", "gzip")
 //                .method(originalRequest.method(), gzip(originalRequest.body()))
 //                .build();
 //        Response response = chain.proceed(originalRequest);
-//        FzyLog.i("okhttp拦截器拦截到响应:"+response.body().string());
+//        FLog.i("okhttp拦截器拦截到响应:"+response.body().string());
         return chain.proceed(originalRequest);
 
     }

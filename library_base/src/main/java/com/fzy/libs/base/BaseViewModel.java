@@ -2,23 +2,26 @@ package com.fzy.libs.base;
 
 import android.app.Application;
 
-import com.fzy.libs.utils.FzyLog;
+import com.alibaba.android.arouter.launcher.ARouter;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.MutableLiveData;
 
 /**
  * Author: openXu
  * Time: 2019/2/27 16:49
  * class: BaseViewModel
  * Description:
- * 1、ViewModel是为界面组件提供数据，并可在配置变更后继续存在的对象，
- *    用于管理相关业务逻辑和数据，充当Controller。
+ * 1、ViewModel是为界面组件提供数据，并可在配置变更后继续存在的对象，用于管理相关业务逻辑和数据，充当Controller
+ *
  * 2、需要继承ViewModel类，并将界面需要的数据放到ViewModel中
+ *
  * 3、由于ViewModel生命周期比Activity&Fragment长，由获取ViewModel实例时传递给ViewModelProvider的Lifecycle决定的
  *    (activity.onDestroy() or fragment.detached())，所以不能引用他们的实例。
+ *
  * 4、如果ViewModel需要Application的context（如获取系统服务），可以继承AndroidViewModel，
  *    并拥有一个构造器接收Application。
  *
@@ -59,43 +62,70 @@ import androidx.lifecycle.LifecycleOwner;
  */
 public class BaseViewModel extends AndroidViewModel implements IBaseViewModel{
 
+    private UIEvent uiEvent;
     public BaseViewModel(@NonNull Application application) {
         super(application);
-        FzyLog.w("ViewModel创建");
     }
-    //ON_ANY可以匹配所有生命周期方法
+
+
+    /**************************************👇👇👇ViewModel中定义控制UI交互**************************************/
+    public UIEvent getUIEvent() {
+        if (uiEvent == null)
+            uiEvent = new UIEvent();
+        return uiEvent;
+    }
+    public void showDialog() {
+        uiEvent.event_dialog_loading.setValue(true);
+    }
+    public void dismissDialog() {
+        uiEvent.event_dialog_dismiss.setValue(null);
+    }
+    public void startActivity(String path){
+        ARouter.getInstance().build(path).navigation();
+    }
+
+    public void finish() {
+        uiEvent.event_finish.setValue(null);
+    }
+
+    /**
+     * 充当ViewModel和UI(Activity or Fragment)的锲约，相当于MVP中的IView。
+     * 实现在ViewModel中调用UI的方法
+     */
+    public final class UIEvent/* extends MutableLiveData*/{
+        //正在加载Dialog
+        public MutableLiveData<Boolean> event_dialog_loading = new MutableLiveData<>();
+        public MutableLiveData<Void> event_dialog_dismiss = new MutableLiveData<>();
+        public MutableLiveData<Void> event_finish = new MutableLiveData<>();
+        public MutableLiveData<String> event_startactivity = new MutableLiveData<>();
+        public MutableLiveData<Void> dismissDialogEvent;
+    }
+
+    /**************************************👆👆👆ViewModel中定义控制UI交互**************************************/
+
+
+
+
+
+    /**************************************👇👇👇监听Activity or Fragment生命周期方法，如有必要可以重写**************************************/
     @Override
-    public void onAny(LifecycleOwner owner, Lifecycle.Event event) {
-        FzyLog.i("匹配生命周期：onAny");
-    }
+    public void onAny(LifecycleOwner owner, Lifecycle.Event event) { }
     @Override
-    public void onCreate() {
-        FzyLog.i("匹配生命周期：onCreate");
-    }
+    public void onCreate() { }
     @Override
-    public void onStart() {
-        FzyLog.i("匹配生命周期：onStart");
-    }
+    public void onStart() { }
     @Override
-    public void onResume() {
-        FzyLog.i("匹配生命周期：onResume");
-    }
+    public void onResume() { }
     @Override
-    public void onPause() {
-        FzyLog.i("匹配生命周期：onPause");
-    }
+    public void onPause() { }
     @Override
-    public void onStop() {
-        FzyLog.i("匹配生命周期：onStop");
-    }
+    public void onStop() { }
     @Override
-    public void onDestroy() {
-        FzyLog.i("匹配生命周期：onDestroy");
-    }
+    public void onDestroy() { }
+    /**************************************👆👆👆监听Activity or Fragment生命周期方法，如有必要可以重写**************************************/
 
     @Override
     protected void onCleared() {
         super.onCleared();
-        FzyLog.e("ViewModel.onCleared()清除资源");
     }
 }
