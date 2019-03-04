@@ -7,11 +7,10 @@ import android.util.Log;
 import com.fzy.libs.BuildConfig;
 import com.fzy.libs.base.BaseApplication;
 import com.fzy.libs.http.base.BaseOberver;
-import com.fzy.libs.http.base.FzyResponse;
 import com.fzy.libs.http.converter.FzyGsonConverterFactory;
-import com.fzy.libs.http.error.ErrorObserver;
 import com.fzy.libs.http.error.HttpError;
 import com.fzy.libs.http.error.HttpErrorHandle;
+import com.fzy.libs.http.error.HttpErrorObserver;
 import com.fzy.libs.http.interceptor.LoggerInterceptor;
 import com.fzy.libs.http.interceptor.RetryInterceptor;
 import com.fzy.libs.utils.FLog;
@@ -24,11 +23,11 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.net.URLDecoder;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -36,13 +35,11 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
-import okhttp3.internal.http.RealResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class NetworkManager {
@@ -143,7 +140,16 @@ public class NetworkManager {
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 //处理Http相关错误
-                .onErrorReturn(new ErrorObserver())
+                .onErrorResumeNext(new Function<Throwable, ObservableSource<? extends ResponseBody>>() {
+                    @Override
+                    public ObservableSource<? extends ResponseBody> apply(Throwable throwable) throws Exception {
+                        HttpError error = HttpErrorHandle.handleError(throwable);
+                        FLog.e("Http请求错误："+error);
+                        //给用户错误提示
+//        FToast.error(error.getToastMsg());
+                        return Observable.error(error);
+                    }
+                })
                 .subscribe(new Observer<ResponseBody>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -170,19 +176,32 @@ public class NetworkManager {
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 //处理Http相关错误
-                .onErrorReturn(new ErrorObserver())
+           /*     .onErrorResumeNext(new Function<Throwable, ObservableSource<? extends ResponseBody>>() {
+                    @Override
+                    public ObservableSource<? extends ResponseBody> apply(Throwable throwable) throws Exception {
+                        HttpError error = HttpErrorHandle.handleError(throwable);
+                        FLog.e("Http请求错误："+error);
+                        //给用户错误提示
+                        FToast.error(error.getToastMsg());
+                        return Observable.empty();  //创建一个不发射任何数据但是正常终止的Observable；
+                    }
+                })*/
                 .map(new Function<ResponseBody, T>() {
                     @Override
                     public T apply(ResponseBody responseBody) throws Exception {
                         FLog.i("map接受到数据:"+responseBody);
-                        Gson gson = new Gson();
-                        Type type = new TypeToken<T>(){}.getType();
-
                         Class<T> tClass = (Class<T>) ((ParameterizedType) observer.getClass().getGenericSuperclass()).getActualTypeArguments()[0]; // 根据当前类获取泛型的Type
-//                        Type ty = new ParameterizedTypeImpl(BaseResponse.class, new Class[]{tClass}); // 传泛型的Type和我们想要的外层类的Type来组装我们想要的类型
-
-                        //com.google.gson.internal.LinkedTreeMap cannot be cast to com.fzy.mbase.bean.User
-                        return gson.fromJson("{\"userName\":\"xxxxx\", \"password\":\"sssss\"}", tClass);
+                        return new Gson().fromJson("{\"userName\":\"xxxxx\", \"password\":\"sssss\"c}", tClass);
+                    }
+                })
+                .onErrorResumeNext(new Function<Throwable, ObservableSource<? extends T>>() {
+                    @Override
+                    public ObservableSource<? extends T> apply(Throwable throwable) throws Exception {
+                        HttpError error = HttpErrorHandle.handleError(throwable);
+                        FLog.e("Http请求错误："+error);
+                        //给用户错误提示
+                        FToast.error(error.getToastMsg());
+                        return Observable.empty();  //创建一个不发射任何数据但是正常终止的Observable；
                     }
                 })
                 .subscribe(observer);

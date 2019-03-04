@@ -16,6 +16,7 @@ import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Author: openXu
@@ -77,13 +78,22 @@ public class LoginViewModel extends BaseViewModel {
 //        NetworkManager.getInstance().doGet("demo", params, new HttpCallBack(){
         NetworkManager.getInstance().doGet2("demo", params, new BaseOberver<User>() {
             @Override
+            public void onSubscribe(Disposable d) {
+                super.onSubscribe(d);
+                showDialog();
+            }
+            @Override
+            public void onComplete() {
+                super.onComplete();
+                dismissDialog();
+            }
+            @Override
             public void onNext(User user) {
                 FLog.w("onNext开始发射了:"+user);
             }
             @Override
             public void onError(Throwable e) {
                 FLog.e("发射错误了onError "+e);
-
             }
         });
     }

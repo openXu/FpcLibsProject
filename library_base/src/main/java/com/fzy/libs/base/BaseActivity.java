@@ -102,7 +102,7 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
                 if (dialog != null && dialog.isShowing())
                     dialog.dismiss();
                 dialog = new MaterialDialog.Builder(mContext)
-                        .content("正在登入...")
+                        .content("请稍后...")
                         .progress(true,-1)//等待图标 true=圆形icon false=进度条
                         .cancelable(false)//不会被取消 （包括返回键和外部点击都无法取消）
                         .build();

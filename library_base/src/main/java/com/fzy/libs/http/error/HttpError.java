@@ -6,7 +6,7 @@ package com.fzy.libs.http.error;
  * class: HttpError
  * Description:
  */
-public class HttpError extends Exception {
+public class HttpError extends RuntimeException {
 
     private int code;
     private String massage;
