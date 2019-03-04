@@ -1,5 +1,7 @@
 package com.fzy.libs.http;
 
+import com.fzy.libs.http.base.FzyResponse;
+
 import java.util.Map;
 
 import io.reactivex.Observable;

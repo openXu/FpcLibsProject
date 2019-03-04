@@ -6,15 +6,25 @@ import android.util.Log;
 
 import com.fzy.libs.BuildConfig;
 import com.fzy.libs.base.BaseApplication;
+import com.fzy.libs.http.base.BaseOberver;
+import com.fzy.libs.http.base.FzyResponse;
+import com.fzy.libs.http.converter.FzyGsonConverterFactory;
+import com.fzy.libs.http.error.ErrorObserver;
+import com.fzy.libs.http.error.HttpError;
+import com.fzy.libs.http.error.HttpErrorHandle;
 import com.fzy.libs.http.interceptor.LoggerInterceptor;
-import com.fzy.libs.http.interceptor.ResponseInterceptor;
 import com.fzy.libs.http.interceptor.RetryInterceptor;
 import com.fzy.libs.utils.FLog;
+import com.fzy.libs.utils.toasty.FToast;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.net.URLDecoder;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -22,9 +32,11 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
+import okhttp3.internal.http.RealResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -88,7 +100,7 @@ public class NetworkManager {
                 .client(client)
                 .baseUrl(BuildConfig.baseUrl)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(FzyGsonConverterFactory.create())
                 .build();
         apiService = retrofit.create(ApiService.class);
     }
@@ -101,10 +113,6 @@ public class NetworkManager {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
-                FLog.e("Request onResponse：" + response);
-                FLog.e("Request onResponse：" + response.code());
-                FLog.e("Request onResponse：" + response.body());
-                FLog.e("Request onResponse：" + response.message());
                 if (response.code() == 200) {
                     try {
                         String result = response.body().string();
@@ -131,11 +139,52 @@ public class NetworkManager {
 
     public void doGet1(String url, Map<String, String> params, final HttpCallBack<OneSentence> callBack) {
         Observable<ResponseBody> observable = apiService.rxGet(url, params);
-        observable
-                .subscribeOn(Schedulers.io())
+        observable.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
-    }
+                //处理Http相关错误
+                .onErrorReturn(new ErrorObserver())
+                .subscribe(new Observer<ResponseBody>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        FLog.i("onSubscribe开始订阅了");
+                    }
+                    @Override
+                    public void onNext(ResponseBody responseBody) {
+                        FLog.w("onNext开始发射了:"+responseBody);
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        FLog.e("发射错误了onError "+e);
 
+                    }
+                    @Override
+                    public void onComplete() {
+                        FLog.i("发射完成了onComplete");
+                    }
+                });
+    }
+    public <T> void doGet2(String url, Map<String, String> params, final BaseOberver<T> observer) {
+        Observable<ResponseBody> observable = apiService.rxGet(url, params);
+        observable.subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                //处理Http相关错误
+                .onErrorReturn(new ErrorObserver())
+                .map(new Function<ResponseBody, T>() {
+                    @Override
+                    public T apply(ResponseBody responseBody) throws Exception {
+                        FLog.i("map接受到数据:"+responseBody);
+                        Gson gson = new Gson();
+                        Type type = new TypeToken<T>(){}.getType();
+
+                        Class<T> tClass = (Class<T>) ((ParameterizedType) observer.getClass().getGenericSuperclass()).getActualTypeArguments()[0]; // 根据当前类获取泛型的Type
+//                        Type ty = new ParameterizedTypeImpl(BaseResponse.class, new Class[]{tClass}); // 传泛型的Type和我们想要的外层类的Type来组装我们想要的类型
+
+                        //com.google.gson.internal.LinkedTreeMap cannot be cast to com.fzy.mbase.bean.User
+                        return gson.fromJson("{\"userName\":\"xxxxx\", \"password\":\"sssss\"}", tClass);
+                    }
+                })
+                .subscribe(observer);
+    }
 }

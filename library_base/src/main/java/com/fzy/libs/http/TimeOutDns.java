@@ -50,7 +50,7 @@ public class TimeOutDns implements Dns {
         }*/
 
 
-        FLog.w("解析DNS1："+Thread.currentThread());
+//        FLog.w("解析DNS1："+Thread.currentThread());
         if (hostname == null) {
             throw new UnknownHostException("hostname == null");
         } else {

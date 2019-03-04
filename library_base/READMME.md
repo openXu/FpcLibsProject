@@ -13,11 +13,11 @@
     FzyToast.Config.getInstance()reset()
 
     //使用
-    FzyToast.error("错误提示", Toast.LENGTH_SHORT, true).show();
-    FzyToast.success("成功提示", Toast.LENGTH_SHORT, true).show();
-    FzyToast.info("信息提示", Toast.LENGTH_SHORT, false).show();
-    FzyToast.warning("警告提示", Toast.LENGTH_SHORT, true).show();
-    FzyToast.normal("普通提示").show();
+    FzyToast.error("错误提示", Toast.LENGTH_SHORT, true);
+    FzyToast.success("成功提示", Toast.LENGTH_SHORT, true);
+    FzyToast.info("信息提示", Toast.LENGTH_SHORT, false);
+    FzyToast.warning("警告提示", Toast.LENGTH_SHORT, true);
+    FzyToast.normal("普通提示");
 ```
 
 ## 2、Log

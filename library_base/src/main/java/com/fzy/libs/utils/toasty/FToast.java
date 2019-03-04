@@ -65,241 +65,173 @@ public class FToast {
     static {
         context = BaseApplication.getApplication().getApplicationContext();
     }
-    @CheckResult
-    public static Toast normal(@StringRes int message) {
-        return normal(context.getString(message), Toast.LENGTH_SHORT, null, false);
+   
+    public static void normal(@StringRes int message) {
+        normal(context.getString(message), Toast.LENGTH_SHORT, null, false);
     }
-
-    @CheckResult
-    public static Toast normal(@NonNull CharSequence message) {
-        return normal(message, Toast.LENGTH_SHORT, null, false);
+    public static void normal(@NonNull CharSequence message) {
+        normal(message, Toast.LENGTH_SHORT, null, false);
     }
-
-    @CheckResult
-    public static Toast normal(@StringRes int message, Drawable icon) {
-        return normal(context.getString(message), Toast.LENGTH_SHORT, icon, true);
+    public static void normal(@StringRes int message, Drawable icon) {
+        normal(context.getString(message), Toast.LENGTH_SHORT, icon, true);
     }
-
-    @CheckResult
-    public static Toast normal(@NonNull CharSequence message, Drawable icon) {
-        return normal(message, Toast.LENGTH_SHORT, icon, true);
+    public static void normal(@NonNull CharSequence message, Drawable icon) {
+        normal(message, Toast.LENGTH_SHORT, icon, true);
     }
-
-    @CheckResult
-    public static Toast normal(@StringRes int message, int duration) {
-        return normal(context.getString(message), duration, null, false);
+    public static void normal(@StringRes int message, int duration) {
+        normal(context.getString(message), duration, null, false);
     }
-
-    @CheckResult
-    public static Toast normal(@NonNull CharSequence message, int duration) {
-        return normal(message, duration, null, false);
+    public static void normal(@NonNull CharSequence message, int duration) {
+        normal(message, duration, null, false);
     }
-
-    @CheckResult
-    public static Toast normal(@StringRes int message, int duration,
+    public static void normal(@StringRes int message, int duration,
                                Drawable icon) {
-        return normal(context.getString(message), duration, icon, true);
+        normal(context.getString(message), duration, icon, true);
     }
-
-    @CheckResult
-    public static Toast normal(@NonNull CharSequence message, int duration,
+    public static void normal(@NonNull CharSequence message, int duration,
                                Drawable icon) {
-        return normal(message, duration, icon, true);
+        normal(message, duration, icon, true);
     }
-
-    @CheckResult
-    public static Toast normal(@StringRes int message, int duration,
+    public static void normal(@StringRes int message, int duration,
                                Drawable icon, boolean withIcon) {
-        return custom(context.getString(message), icon, ToastyUtils.getColor(context, R.color.toast_normalColor),
+        custom(context.getString(message), icon, ToastyUtils.getColor(context, R.color.toast_normalColor),
                 ToastyUtils.getColor(context, R.color.toast_defaultTextColor), duration, withIcon, true);
     }
-
-    @CheckResult
-    public static Toast normal(@NonNull CharSequence message, int duration,
+    public static void normal(@NonNull CharSequence message, int duration,
                                Drawable icon, boolean withIcon) {
-        return custom(message, icon, ToastyUtils.getColor(context, R.color.toast_normalColor),
+        custom(message, icon, ToastyUtils.getColor(context, R.color.toast_normalColor),
                 ToastyUtils.getColor(context, R.color.toast_defaultTextColor), duration, withIcon, true);
     }
-
-    @CheckResult
-    public static Toast warning(@StringRes int message) {
-        return warning(context.getString(message), Toast.LENGTH_SHORT, true);
+   
+    
+    public static void warning(@StringRes int message) {
+        warning(context.getString(message), Toast.LENGTH_SHORT, true);
     }
-
-    @CheckResult
-    public static Toast warning(@NonNull CharSequence message) {
-        return warning(message, Toast.LENGTH_SHORT, true);
+    public static void warning(@NonNull CharSequence message) {
+        warning(message, Toast.LENGTH_SHORT, true);
     }
-
-    @CheckResult
-    public static Toast warning(@StringRes int message, int duration) {
-        return warning(context.getString(message), duration, true);
+    public static void warning(@StringRes int message, int duration) {
+        warning(context.getString(message), duration, true);
     }
-
-    @CheckResult
-    public static Toast warning(@NonNull CharSequence message, int duration) {
-        return warning(message, duration, true);
+    public static void warning(@NonNull CharSequence message, int duration) {
+        warning(message, duration, true);
     }
-
-    @CheckResult
-    public static Toast warning(@StringRes int message, int duration, boolean withIcon) {
-        return custom(context.getString(message), ToastyUtils.getDrawable(context, R.drawable.ic_toast_error_outline_white_24dp),
+    public static void warning(@StringRes int message, int duration, boolean withIcon) {
+        custom(context.getString(message), ToastyUtils.getDrawable(context, R.drawable.ic_toast_error_outline_white_24dp),
+                ToastyUtils.getColor(context, R.color.toast_warningColor), ToastyUtils.getColor(context, R.color.toast_defaultTextColor),
+                duration, withIcon, true);
+    }
+    public static void warning(@NonNull CharSequence message, int duration, boolean withIcon) {
+        custom(message, ToastyUtils.getDrawable(context, R.drawable.ic_toast_error_outline_white_24dp),
                 ToastyUtils.getColor(context, R.color.toast_warningColor), ToastyUtils.getColor(context, R.color.toast_defaultTextColor),
                 duration, withIcon, true);
     }
 
-    @CheckResult
-    public static Toast warning(@NonNull CharSequence message, int duration, boolean withIcon) {
-        return custom(message, ToastyUtils.getDrawable(context, R.drawable.ic_toast_error_outline_white_24dp),
-                ToastyUtils.getColor(context, R.color.toast_warningColor), ToastyUtils.getColor(context, R.color.toast_defaultTextColor),
+    
+    public static void info(@StringRes int message) {
+        info(context.getString(message), Toast.LENGTH_SHORT, true);
+    }
+    public static void info(@NonNull CharSequence message) {
+        info(message, Toast.LENGTH_SHORT, true);
+    }
+    public static void info(@StringRes int message, int duration) {
+        info(context.getString(message), duration, true);
+    }
+    public static void info(@NonNull CharSequence message, int duration) {
+        info(message, duration, true);
+    }
+    public static void info(@StringRes int message, int duration, boolean withIcon) {
+        custom(context.getString(message), ToastyUtils.getDrawable(context, R.drawable.ic_toast_info_outline_white_24dp),
+                ToastyUtils.getColor(context, R.color.toast_infoColor), ToastyUtils.getColor(context, R.color.toast_defaultTextColor),
                 duration, withIcon, true);
     }
-
-    @CheckResult
-    public static Toast info(@StringRes int message) {
-        return info(context.getString(message), Toast.LENGTH_SHORT, true);
-    }
-
-    @CheckResult
-    public static Toast info(@NonNull CharSequence message) {
-        return info(message, Toast.LENGTH_SHORT, true);
-    }
-
-    @CheckResult
-    public static Toast info(@StringRes int message, int duration) {
-        return info(context.getString(message), duration, true);
-    }
-
-    @CheckResult
-    public static Toast info(@NonNull CharSequence message, int duration) {
-        return info(message, duration, true);
-    }
-
-    @CheckResult
-    public static Toast info(@StringRes int message, int duration, boolean withIcon) {
-        return custom(context.getString(message), ToastyUtils.getDrawable(context, R.drawable.ic_toast_info_outline_white_24dp),
+    public static void info(@NonNull CharSequence message, int duration, boolean withIcon) {
+        custom(message, ToastyUtils.getDrawable(context, R.drawable.ic_toast_info_outline_white_24dp),
                 ToastyUtils.getColor(context, R.color.toast_infoColor), ToastyUtils.getColor(context, R.color.toast_defaultTextColor),
                 duration, withIcon, true);
     }
 
-    @CheckResult
-    public static Toast info(@NonNull CharSequence message, int duration, boolean withIcon) {
-        return custom(message, ToastyUtils.getDrawable(context, R.drawable.ic_toast_info_outline_white_24dp),
-                ToastyUtils.getColor(context, R.color.toast_infoColor), ToastyUtils.getColor(context, R.color.toast_defaultTextColor),
+   
+    public static void success(@StringRes int message) {
+        success(context.getString(message), Toast.LENGTH_SHORT, true);
+    }
+    public static void success(@NonNull CharSequence message) {
+        success(message, Toast.LENGTH_SHORT, true);
+    }
+    public static void success(@StringRes int message, int duration) {
+        success(context.getString(message), duration, true);
+    }
+    public static void success(@NonNull CharSequence message, int duration) {
+        success(message, duration, true);
+    }
+    public static void success(@StringRes int message, int duration, boolean withIcon) {
+        custom(context.getString(message), ToastyUtils.getDrawable(context, R.drawable.ic_toast_check_white_24dp),
+                ToastyUtils.getColor(context, R.color.toast_successColor), ToastyUtils.getColor(context, R.color.toast_defaultTextColor),
                 duration, withIcon, true);
     }
-
-    @CheckResult
-    public static Toast success(@StringRes int message) {
-        return success(context.getString(message), Toast.LENGTH_SHORT, true);
-    }
-
-    @CheckResult
-    public static Toast success(@NonNull CharSequence message) {
-        return success(message, Toast.LENGTH_SHORT, true);
-    }
-
-    @CheckResult
-    public static Toast success(@StringRes int message, int duration) {
-        return success(context.getString(message), duration, true);
-    }
-
-    @CheckResult
-    public static Toast success(@NonNull CharSequence message, int duration) {
-        return success(message, duration, true);
-    }
-
-    @CheckResult
-    public static Toast success(@StringRes int message, int duration, boolean withIcon) {
-        return custom(context.getString(message), ToastyUtils.getDrawable(context, R.drawable.ic_toast_check_white_24dp),
+    public static void success(@NonNull CharSequence message, int duration, boolean withIcon) {
+        custom(message, ToastyUtils.getDrawable(context, R.drawable.ic_toast_check_white_24dp),
                 ToastyUtils.getColor(context, R.color.toast_successColor), ToastyUtils.getColor(context, R.color.toast_defaultTextColor),
                 duration, withIcon, true);
     }
 
-    @CheckResult
-    public static Toast success(@NonNull CharSequence message, int duration, boolean withIcon) {
-        return custom(message, ToastyUtils.getDrawable(context, R.drawable.ic_toast_check_white_24dp),
-                ToastyUtils.getColor(context, R.color.toast_successColor), ToastyUtils.getColor(context, R.color.toast_defaultTextColor),
+   
+    public static void error(@StringRes int message) {
+        error(context.getString(message), Toast.LENGTH_SHORT, true);
+    }
+    public static void error(@NonNull CharSequence message) {
+        error(message, Toast.LENGTH_SHORT, true);
+    }
+    public static void error(@StringRes int message, int duration) {
+        error(context.getString(message), duration, true);
+    }
+    public static void error(@NonNull CharSequence message, int duration) {
+        error(message, duration, true);
+    }
+    public static void error(@StringRes int message, int duration, boolean withIcon) {
+        custom(context.getString(message), ToastyUtils.getDrawable(context, R.drawable.ic_toast_clear_white_24dp),
+                ToastyUtils.getColor(context, R.color.toast_errorColor), ToastyUtils.getColor(context, R.color.toast_defaultTextColor),
                 duration, withIcon, true);
     }
-
-    @CheckResult
-    public static Toast error(@StringRes int message) {
-        return error(context.getString(message), Toast.LENGTH_SHORT, true);
-    }
-
-    @CheckResult
-    public static Toast error(@NonNull CharSequence message) {
-        return error(message, Toast.LENGTH_SHORT, true);
-    }
-
-    @CheckResult
-    public static Toast error(@StringRes int message, int duration) {
-        return error(context.getString(message), duration, true);
-    }
-
-    @CheckResult
-    public static Toast error(@NonNull CharSequence message, int duration) {
-        return error(message, duration, true);
-    }
-
-    @CheckResult
-    public static Toast error(@StringRes int message, int duration, boolean withIcon) {
-        return custom(context.getString(message), ToastyUtils.getDrawable(context, R.drawable.ic_toast_clear_white_24dp),
+    public static void error(@NonNull CharSequence message, int duration, boolean withIcon) {
+        custom(message, ToastyUtils.getDrawable(context, R.drawable.ic_toast_clear_white_24dp),
                 ToastyUtils.getColor(context, R.color.toast_errorColor), ToastyUtils.getColor(context, R.color.toast_defaultTextColor),
                 duration, withIcon, true);
     }
 
-    @CheckResult
-    public static Toast error(@NonNull CharSequence message, int duration, boolean withIcon) {
-        return custom(message, ToastyUtils.getDrawable(context, R.drawable.ic_toast_clear_white_24dp),
-                ToastyUtils.getColor(context, R.color.toast_errorColor), ToastyUtils.getColor(context, R.color.toast_defaultTextColor),
-                duration, withIcon, true);
-    }
-
-    @CheckResult
-    public static Toast custom(@StringRes int message, Drawable icon,
+   
+    public static void custom(@StringRes int message, Drawable icon,
                                int duration, boolean withIcon) {
-        return custom(context.getString(message), icon, -1, ToastyUtils.getColor(context, R.color.toast_defaultTextColor),
+        custom(context.getString(message), icon, -1, ToastyUtils.getColor(context, R.color.toast_defaultTextColor),
                 duration, withIcon, false);
     }
-
-    @CheckResult
-    public static Toast custom(@NonNull CharSequence message, Drawable icon,
+    public static void custom(@NonNull CharSequence message, Drawable icon,
                                int duration, boolean withIcon) {
-        return custom(message, icon, -1, ToastyUtils.getColor(context, R.color.toast_defaultTextColor),
+        custom(message, icon, -1, ToastyUtils.getColor(context, R.color.toast_defaultTextColor),
                 duration, withIcon, false);
     }
-
-    @CheckResult
-    public static Toast custom(@StringRes int message, @DrawableRes int iconRes,
+    public static void custom(@StringRes int message, @DrawableRes int iconRes,
                                @ColorInt int tintColor, int duration,
                                boolean withIcon, boolean shouldTint) {
-        return custom(context.getString(message), ToastyUtils.getDrawable(context, iconRes),
+        custom(context.getString(message), ToastyUtils.getDrawable(context, iconRes),
                 tintColor, ToastyUtils.getColor(context, R.color.toast_defaultTextColor), duration, withIcon, shouldTint);
     }
-
-    @CheckResult
-    public static Toast custom(@NonNull CharSequence message, @DrawableRes int iconRes,
+    public static void custom(@NonNull CharSequence message, @DrawableRes int iconRes,
                                @ColorInt int tintColor, int duration,
                                boolean withIcon, boolean shouldTint) {
-        return custom(message, ToastyUtils.getDrawable(context, iconRes),
+        custom(message, ToastyUtils.getDrawable(context, iconRes),
                 tintColor, ToastyUtils.getColor(context, R.color.toast_defaultTextColor), duration, withIcon, shouldTint);
     }
-
-    @CheckResult
-    public static Toast custom(@StringRes int message, Drawable icon,
+    public static void custom(@StringRes int message, Drawable icon,
                                @ColorInt int tintColor, int duration,
                                boolean withIcon, boolean shouldTint) {
-        return custom(context.getString(message), icon, tintColor, ToastyUtils.getColor(context, R.color.toast_defaultTextColor),
+        custom(context.getString(message), icon, tintColor, ToastyUtils.getColor(context, R.color.toast_defaultTextColor),
                 duration, withIcon, shouldTint);
     }
-
-    @CheckResult
-    public static Toast custom(@StringRes int message, Drawable icon,
+    public static void custom(@StringRes int message, Drawable icon,
                                @ColorInt int tintColor, @ColorInt int textColor, int duration,
                                boolean withIcon, boolean shouldTint) {
-        return custom(context.getString(message), icon, tintColor, textColor,
+        custom(context.getString(message), icon, tintColor, textColor,
                 duration, withIcon, shouldTint);
     }
 
@@ -314,8 +246,7 @@ public class FToast {
      * @return
      */
     @SuppressLint("ShowToast")
-    @CheckResult
-    public static Toast custom(@NonNull CharSequence message, Drawable icon,
+    public static void custom(@NonNull CharSequence message, Drawable icon,
                                @ColorInt int tintColor, @ColorInt int textColor, int duration,
                                boolean withIcon, boolean shouldTint) {
         final Toast currentToast = Toast.makeText(context, "", duration);
@@ -352,7 +283,7 @@ public class FToast {
             }
             lastToast = currentToast;
         }
-        return currentToast;
+        currentToast.show();
     }
 
     public static class Config {
@@ -367,7 +298,7 @@ public class FToast {
             // avoiding instantiation
         }
 
-        @CheckResult
+       
         public static Config getInstance() {
             return new Config();
         }
@@ -379,25 +310,25 @@ public class FToast {
             FToast.allowQueue = allowQueueDef;
         }
 
-        @CheckResult
+       
         public Config setToastTypeface(@NonNull Typeface typeface) {
             this.typeface = typeface;
             return this;
         }
 
-        @CheckResult
+       
         public Config setTextSize(int sizeInSp) {
             this.textSize = sizeInSp;
             return this;
         }
 
-        @CheckResult
+       
         public Config tintIcon(boolean tintIcon) {
             this.tintIcon = tintIcon;
             return this;
         }
 
-        @CheckResult
+       
         public Config allowQueue(boolean allowQueue) {
             this.allowQueue = allowQueue;
             return this;

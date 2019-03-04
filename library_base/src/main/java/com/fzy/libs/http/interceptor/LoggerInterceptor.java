@@ -23,18 +23,16 @@ public class LoggerInterceptor implements Interceptor {
         long t1 = System.nanoTime();//请求发起的时间
         FLog.i(String.format("发送请求 %s on %s%n%s",request.url(),chain.connection(),request.headers()));
         Response response = chain.proceed(request);
-        FLog.w("是否成功："+response.isSuccessful()+"   code="+response.code()+"   msg="+response.message());
+//        FLog.w("是否成功："+response.isSuccessful()+"   code="+response.code()+"   msg="+response.message());
         long t2 = System.nanoTime();//收到响应的时间
         //不能直接使用response.body（）.string()的方式输出日志
         //因为response.body().string()之后，response中的流会被关闭，程序会报错，
         // 我们需要创建出一个新的response给应用层处理
         ResponseBody responseBody = response.peekBody(1024 * 1024);
-        /*FLog.w(String.format("接收响应：[%s] %n返回json:%s  %.1fms%n%s",
-                response.request().url(),
+        FLog.w(String.format("接收响应：json:%s  %.1fms%n",
                 responseBody.string(),
-                (t2-t1) /1e6d,
-                response.headers()
-        ));*/
+                (t2-t1) /1e6d
+        ));
         return response;
     }
 }
