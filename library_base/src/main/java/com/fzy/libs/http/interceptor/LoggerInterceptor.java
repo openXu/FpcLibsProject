@@ -29,12 +29,12 @@ public class LoggerInterceptor implements Interceptor {
         //因为response.body().string()之后，response中的流会被关闭，程序会报错，
         // 我们需要创建出一个新的response给应用层处理
         ResponseBody responseBody = response.peekBody(1024 * 1024);
-        FLog.w(String.format("接收响应：[%s] %n返回json:%s  %.1fms%n%s",
+        /*FLog.w(String.format("接收响应：[%s] %n返回json:%s  %.1fms%n%s",
                 response.request().url(),
                 responseBody.string(),
                 (t2-t1) /1e6d,
                 response.headers()
-        ));
+        ));*/
         return response;
     }
 }

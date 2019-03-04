@@ -72,13 +72,15 @@ public class NetworkManager {
         // 初始化okhttp
         OkHttpClient client = new OkHttpClient.Builder()
 //                .retryOnConnectionFailure(true)//默认重试一次，若需要重试N次，则要实现拦截器。
-                .connectTimeout(1, TimeUnit.SECONDS)
-                .readTimeout(1, TimeUnit.SECONDS)
-                .writeTimeout(1, TimeUnit.SECONDS)
+        .retryOnConnectionFailure(false)
+                .dns(new TimeOutDns(3000, TimeUnit.MILLISECONDS))  //DNS解析超时，如果不设置可能回出现在网络不可用的情况下，DNS解析时间太长
+                .connectTimeout(2000, TimeUnit.MILLISECONDS)       //IP连接超时
+                .readTimeout(3000, TimeUnit.MILLISECONDS)
+                .writeTimeout(3000, TimeUnit.MILLISECONDS)
 //                .addInterceptor(new ResponseInterceptor())
                 .addInterceptor(new LoggerInterceptor())
                 .addInterceptor(new HttpLoggingInterceptor())
-                .addInterceptor(new RetryInterceptor(1))  //重试
+                .addInterceptor(new RetryInterceptor(2))  //重试
                 .build();
 
         // 初始化Retrofit
@@ -121,6 +123,7 @@ public class NetworkManager {
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                FLog.e("Request onFailure：" + t.getMessage());
                 callBack.onError(t.getMessage());
             }
         });
