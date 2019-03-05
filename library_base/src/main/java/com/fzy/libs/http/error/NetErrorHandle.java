@@ -1,7 +1,8 @@
 package com.fzy.libs.http.error;
 
-import com.fzy.libs.BuildConfig;
-import com.fzy.libs.utils.FLog;
+import com.google.gson.JsonParseException;
+
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.net.ConnectException;
@@ -10,20 +11,17 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
-
-import okhttp3.ResponseBody;
 import retrofit2.HttpException;
 
 /**
  * Author: openXu
  * Time: 2019/3/4 11:25
- * class: HttpErrorHandle
- * Description:
+ * class: NetErrorHandle
+ * Description: 处理http请求过程中出现的错误，以及后台返回的相关业务错误，将其转换成用户能看懂的提示
  */
-public class HttpErrorHandle {
+public class NetErrorHandle {
 
     /**HTTP状态码*/
-    public static final int CODE_REQUEST_ERROR = 300;  //(已重定向)
     //4xx(请求错误)
     public static final int CODE_BAD_REQUEST = 400;  //(错误请求) 语义有误或者请求参数有误，当前请求无法被服务器理解
     public static final int CODE_UNAUTHORIZED = 401;   //(未授权) 当前请求需要用户验证
@@ -50,17 +48,10 @@ public class HttpErrorHandle {
     public static final int CODE_GATEWAY_TIMEOUT = 504;  //(网关超时) 服务器作为网关或代理，未及时从上游服务器接收请求。
     public static final int CODE_VERSION_NOT_SUPPORTED = 505;  //(HTTP 版本不受支持) 服务器不支持请求中所使用的 HTTP 协议版本
 
-    public static final int CODE_UNKNOWHOST = 1000;    //(无法解析该域名异常)
-    public static final int CODE_CONNECT_ERROR = 1001;    //(连接服务器异常)
-    public static final int CODE_SOCKET_ERROR = 1002;    //(连接服务器异常)
-    public static final int CODE_SOCKET_TIMEOUT = 1003;    //(连接超时)
-    public static final int CODE_UNKONW = 2000;    //(未知错误)
 
     private static Map<Integer, String> errorMsgMap = new HashMap();
 
     static {
-        errorMsgMap.put(CODE_UNKNOWHOST, "无法解析该域名");
-        errorMsgMap.put(300, "已重定向");
         //4xx(请求错误)
         errorMsgMap.put(400, "请求错误");
         errorMsgMap.put(401, "未授权，请求需要用户验证");
@@ -88,10 +79,17 @@ public class HttpErrorHandle {
         errorMsgMap.put(505, "HTTP 版本不受支持");
     }
 
-    public static HttpError handleError(Throwable throwable){
-        HttpError error;
+    public static NetError handleError(Throwable throwable){
+        NetError error;
         if (throwable instanceof UnknownHostException){  //无法解析该域名异常
-            error = new HttpError(CODE_UNKNOWHOST, "无法解析该域名");
+            error = new NetError(1000,"无法解析该域名:"+throwable.getMessage(), "请检查网络");
+        }else if (throwable instanceof ConnectException){  //表示尝试将套接字连接到远程地址和端口时出错。通常，连接被远程拒绝（例如，没有进程在侦听远程地址/端口）。
+            error = new NetError(1001, "连接服务器异常:"+throwable.getMessage(), "请检查网络");
+        }else if(throwable instanceof SocketException ||
+                throwable instanceof IOException){  //Software caused connection abort
+            error = new NetError(1002, "连接服务器中断:"+throwable.getMessage(), "请检查网络");
+        }else if (throwable instanceof SocketTimeoutException){
+            error = new NetError(1003, "连接超时:"+throwable.getMessage(), "请检查网络");
         }else if (throwable instanceof HttpException){   //网络错误：意外的非2xx HTTP响应的异常
             int code = ((HttpException)throwable).code();
             String body = "";
@@ -101,16 +99,17 @@ public class HttpErrorHandle {
             }catch (Exception e){
                 e.printStackTrace();
             }
-            error = new HttpError(code, errorMsgMap.get(code)+"-"+body);
-        }else if (throwable instanceof ConnectException){  //表示尝试将套接字连接到远程地址和端口时出错。通常，连接被远程拒绝（例如，没有进程在侦听远程地址/端口）。
-            error = new HttpError(CODE_CONNECT_ERROR, "连接服务器异常");
-        }else if(throwable instanceof SocketException ||
-                throwable instanceof IOException){  //Software caused connection abort
-            error = new HttpError(CODE_SOCKET_ERROR, "连接服务器中断");
-        }else if (throwable instanceof SocketTimeoutException){
-            error = new HttpError(CODE_SOCKET_TIMEOUT, "连接超时");
-        }else{
-            error = new HttpError(CODE_UNKONW, "未知错误");
+            error = new NetError(code, errorMsgMap.get(code)+"-"+body, errorMsgMap.get(code));
+        }
+        //数据解析错误 & 后台业务错误
+        else if (throwable instanceof JsonParseException||
+                throwable instanceof JSONException){
+            error = new NetError(2000, "json解析错误："+throwable.getMessage(), "数据解析错误");
+        }else if (throwable instanceof BusinessError){
+            error = new NetError(3000, "后台业务错误："+((BusinessError)throwable).getMassage(), ((BusinessError)throwable).getMassage());
+        }
+        else{
+            error = new NetError(10000, "未知错误:"+throwable.getMessage(), "未知错误");
         }
         return error;
     }

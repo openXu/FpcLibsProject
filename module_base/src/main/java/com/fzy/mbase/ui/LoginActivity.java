@@ -30,7 +30,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
     protected void initData() {
         viewModel.user.observe(this, user -> {
             binding.setUser(user);
-            startActivity(RouterActivityPath_Test.PAGE_MAIN);
+//            startActivity(RouterActivityPath_Test.PAGE_MAIN);
         });
         binding.btnLogin.setOnClickListener(v->{
             String name = binding.etName.getText().toString().trim();
