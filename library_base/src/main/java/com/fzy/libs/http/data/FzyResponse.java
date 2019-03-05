@@ -4,7 +4,7 @@ package com.fzy.libs.http.data;
  * Author: openXu
  * Time: 2019/3/4 16:33
  * class: FzyResponse
- * Description:
+ * Description: 服务器返回数据格式约定
  */
 public class FzyResponse<T> {
 

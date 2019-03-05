@@ -11,6 +11,7 @@ import com.fzy.libs.http.interceptor.LoggerInterceptor;
 import com.fzy.libs.http.rx.BaseOberver;
 import com.fzy.libs.http.rx.NetErrorObserver;
 import com.fzy.libs.http.rx.ParseDataFuncation;
+import com.fzy.libs.http.util.TimeOutDns;
 import com.fzy.libs.utils.FLog;
 
 import java.io.IOException;
@@ -89,38 +90,6 @@ public class NetworkManager {
                 .addConverterFactory(FzyGsonConverterFactory.create())
                 .build();
         apiService = retrofit.create(ApiService.class);
-    }
-
-    public void doGet(String url, Map<String, String> params, final HttpCallBack callBack){
-        //3. 对 发送请求 进行封装
-        Call<ResponseBody> call = apiService.doGet(url, params);
-        //4. 发送网络请求(异步)
-        final Type type = callBack.getClass().getGenericSuperclass();
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
-                if (response.code() == 200) {
-                    try {
-                        String result = response.body().string();
-                        Log.d(TAG, "Http NetResponse：" + result);
-                        callBack.onSeccuce(result);
-                        // 根据当前类获取泛型的Type
-//                        Type[] tClass =  ((ParameterizedType)type).getActualTypeArguments();
-//                        callBack.onSeccuce(new Gson().fromJson(result, tClass[0]));
-                        return;
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    return;
-                }
-                callBack.onError(response.message());
-            }
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                FLog.e("Request onFailure：" + t.getMessage());
-                callBack.onError(t.getMessage());
-            }
-        });
     }
 
     public <T> void doGetByRx(String url, Map<String, String> params,String jsonStr, final BaseOberver<T> observer) {

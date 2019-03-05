@@ -1,4 +1,4 @@
-package com.fzy.libs.http;
+package com.fzy.libs.http.util;
 
 import com.fzy.libs.utils.FLog;
 

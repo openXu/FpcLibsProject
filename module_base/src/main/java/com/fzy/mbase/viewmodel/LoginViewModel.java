@@ -3,7 +3,6 @@ package com.fzy.mbase.viewmodel;
 import android.app.Application;
 
 import com.fzy.libs.base.BaseViewModel;
-import com.fzy.libs.http.HttpCallBack;
 import com.fzy.libs.http.NetworkManager;
 import com.fzy.libs.http.data.FzyResponse;
 import com.fzy.libs.http.rx.BaseOberver;
@@ -40,9 +39,14 @@ public class LoginViewModel extends BaseViewModel {
     public void login(String userName, String psw) {
 //        FLog.i("登陆");
 //        testget();
-//        fzyGet();
-//        fzyGet1();
-//        fzyGet2();
+
+        map.clear();
+        map.put("sss", "ssss");
+        map.put("qqq", "qqq");
+
+        fzyGet();
+        fzyGet1();
+        fzyGet2();
         fzyGet3();
     }
 
@@ -66,11 +70,13 @@ public class LoginViewModel extends BaseViewModel {
         });*/
     }
 
+    private Map<String, String> map = new HashMap<>();
+
     private void fzyGet(){
         Map<String, String> params = new HashMap<>();
         params.put("companyId", "e3c6f838-13df-11e9-bf3a-fa163e4635ff");
         // "{\"code\":100, \"massage\":\"请求成功\", \"data\":[{\"userName\":\"11111\", \"password\":\"11111\"}, {\"userName\":\"222222\", \"password\":\"222222\"}, {\"userName\":\"2333333\", \"password\":\"33333\"}]}}";
-        FzyResponse response = new FzyResponse(100, "请求成功", new Anim("name", "psw", new Qg("眼睛")));
+        FzyResponse response = new FzyResponse(100, "请求成功", new Anim("name", "psw", new Qg("眼睛", map)));
         NetworkManager.getInstance().doGetByRx("demo", params, new Gson().toJson(response), new BaseOberver<Anim>() {
             @Override
             public void onStart() { showDialog();}
@@ -84,7 +90,7 @@ public class LoginViewModel extends BaseViewModel {
         });
     }
     private void fzyGet1(){
-        FzyResponse response = new FzyResponse(100, "请求成功", new QtBean(new Anim("name1", "psw1", new Qg("屁股")), "班级1"));
+        FzyResponse response = new FzyResponse(100, "请求成功", new QtBean(new Anim("name1", "psw1", new Qg("屁股" ,map)), "班级1"));
         Map<String, String> params = new HashMap<>();
         params.put("companyId", "e3c6f838-13df-11e9-bf3a-fa163e4635ff");
         NetworkManager.getInstance().doGetByRx("demo", params, new Gson().toJson(response), new BaseOberver<QtBean>() {
@@ -100,8 +106,8 @@ public class LoginViewModel extends BaseViewModel {
     }
     private void fzyGet2(){
         List<Anim> anims = new ArrayList<>();
-        anims.add(new Anim("name2", "psw2", new Qg("鼻子")));
-        anims.add(new Anim("name  2", "psw   2", new Qg("嘴巴")));
+        anims.add(new Anim("name2", "psw2", new Qg("鼻子", map)));
+        anims.add(new Anim("name  2", "psw   2", new Qg("嘴巴" ,map)));
         FzyResponse response = new FzyResponse(100, "请求成功", new QtListBean(anims, "班级2"));
 
         Map<String, String> params = new HashMap<>();
@@ -118,8 +124,8 @@ public class LoginViewModel extends BaseViewModel {
     }
     private void fzyGet3(){
         List<Anim> anims = new ArrayList<>();
-        anims.add(new Anim("name2", "psw2", new Qg("鼻子")));
-        anims.add(new Anim("name  2", "psw   2", new Qg("嘴巴")));
+        anims.add(new Anim("name2", "psw2", new Qg("鼻子" ,map)));
+        anims.add(new Anim("name  2", "psw   2", new Qg("嘴巴", map)));
         FzyResponse response = new FzyResponse(100, "请求成功", anims);
 
         Map<String, String> params = new HashMap<>();
