@@ -50,7 +50,7 @@ public class CommandItemDecoration extends RecyclerView.ItemDecoration{
 
         paint = new Paint();
         paint.setAntiAlias(true);
-        paint.setColor(context.getResources().getColor(R.color.textColorHint));
+        paint.setColor(context.getResources().getColor(R.color.line_bg_color));
     }
 
     private void setOrientation(int orientation) {

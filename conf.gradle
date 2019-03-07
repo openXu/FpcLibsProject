@@ -1,8 +1,14 @@
 ext {
-
+    def appTypes = ["\"test\"", "\"apk1\"","\"apk2\"","\"apk3\""]
+    libconfig = [
+            appTypearr        : appTypes,
+            appType        : appTypes[1],    //用于区分app具体属于那个版本，方便模块中相关分支判断
+            baseUrl        : "\"http://47.105.168.178:8030/railway/\"",
+    ]
     android = [
             applicationId : "com.fzy.module",
             javaVersion : JavaVersion.VERSION_1_8,
+            buildToolsVersion :'28.0.3',
             compileSdkVersion: 28,
             targetSdkVersion: 28,
             minSdkVersion    :  16,
@@ -42,6 +48,6 @@ ext {
 
 
     ]
-    def appType = ['apk1','apk2','apk3']
+
 
 }

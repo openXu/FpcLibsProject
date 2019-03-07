@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
-
-
-    <color name="textColor">#333333</color>
-    <color name="textColorVice">#6C6C6C</color>
-    <color name="textColorRed">#D51717</color>
-    <color name="textColorHint">#999999</color>
-    <color name="appColor">#FF2041</color>
-    <color name="appBackColor">#F4F3F3</color>
-    <color name="viewLineColor">#E0E0E0</color>
 
     <!--FToast-->
     <color name="toast_defaultTextColor">#FFFFFF</color> <!--Toast默认文字颜色-->
@@ -20,5 +9,29 @@
     <color name="toast_successColor">#388E3C</color>
     <color name="toast_warningColor">#FFA900</color>
     <color name="toast_normalColor">#353A3E</color>
+
+    <!--****↓↓↓↓↓↓↓↓↓↓↓↓app整体颜色规范↓↓↓↓↓↓↓↓↓↓↓↓****-->
+    <!--整个app主色调，用于title_bar等重要的颜色提醒-->
+    <color name="title_bar_color">#db4527</color>
+    <!--通用背景色-->
+    <color name="main_style">#f7f7f7</color>
+    <!--白色内容区域按下时的背景色-->
+    <color name="white_press_bg">#16000000</color>
+    <!--线条色-->
+    <color name="line_bg_color">#f3f3f3</color>
+
+    <!--字体颜色-->
+    <color name="text_color_def">#5E5E5E</color>
+    <color name="text_color_light_gray">#939393</color>
+    <color name="edit_hint_color">#999999</color>
+
+    <!--辅助色-->
+    <color name="color_red">#d94630</color>
+    <color name="color_yellow">#f28d02</color>
+    <color name="color_green">#66b61d</color>
+    <color name="color_blue">#5da3f4</color>
+    <color name="color_bg_grey">#F2F2F2</color>>
+    <color name="color_main_orange">#DB4528</color>
+    <!--****↑↑↑↑↑↑↑↑↑↑↑↑app整体颜色规范↑↑↑↑↑↑↑↑↑↑↑↑****-->
 
 </resources>

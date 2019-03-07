@@ -54,6 +54,7 @@ public abstract class CommandRecyclerAdapter<T> extends RecyclerView.Adapter<Vie
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
+//        holder.getBinding().setVariable(BR.data, mDatas.get(position));
         convert(holder, mDatas.get(position), position);
         holder.setOnClickListener(-1, new View.OnClickListener() {
             @Override

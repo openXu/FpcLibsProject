@@ -1,17 +1,32 @@
 package com.fzy.libs.base;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.fzy.libs.R;
 import com.fzy.libs.utils.FLog;
+import com.fzy.libs.utils.StatusBarUtil;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.Observer;
@@ -42,14 +57,54 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
         mContext = this;
         //私有的初始化Databinding和ViewModel方法
         initViewDataBinding(savedInstanceState);
+
+        initView();
+
         registUIEventObserve();
         initData();
     }
 
+
+
+    protected void initView(){
+        try{
+            Toolbar toolbar = findViewById(R.id.toolBar);
+//            setTitleCenter(toolbar);
+            //状态栏透明和间距处理
+//            StatusBarUtil.darkMode(this);   //状态栏字体变黑色（透明状态栏）
+//            StatusBarUtil.immersive(this);//全透明状态栏(状态栏字体默认白色)
+            StatusBarUtil.immersive(this, getResources().getColor(R.color.title_bar_color), 1);
+            StatusBarUtil.setPaddingSmart(this, toolbar);
+//            StatusBarUtil.setPaddingSmart(this, view);
+//            StatusBarUtil.setPaddingSmart(this, findViewById(R.id.blurView));
+//            toolbar.setContentInsetStartWithNavigation(0);
+            toolbar.setNavigationOnClickListener(v->finish());
+
+        }catch (Exception e){}
+    }
+    public void setTitleCenter(Toolbar toolbar) {
+        String title = "title";
+        final CharSequence originalTitle = toolbar.getTitle();
+        toolbar.setTitle(title);
+        for (int i = 0; i < toolbar.getChildCount(); i++) {
+            View view = toolbar.getChildAt(i);
+            if (view instanceof TextView) {
+                TextView textView = (TextView) view;
+                if (title.equals(textView.getText())) {
+//                    textView.setGravity(Gravity.CENTER);
+                    Toolbar.LayoutParams params = new Toolbar.LayoutParams(Toolbar.LayoutParams.WRAP_CONTENT, Toolbar.LayoutParams.MATCH_PARENT);
+                    params.gravity = Gravity.CENTER_HORIZONTAL;
+                    textView.setLayoutParams(params);
+                }
+            }
+            toolbar.setTitle(originalTitle);
+        }
+    }
     /**设置布局文件*/
     protected abstract int getContentView(Bundle savedInstanceState);
     /**获取ViewModel的VariableId*/
     protected abstract int getViewModelVariableId();
+
     /**
      * 初始化ViewModel
      * @return 继承BaseViewModel的ViewModel
@@ -60,7 +115,6 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
 
     //页面数据初始化方法
     protected abstract void initData();
-
 
 
     /** 注入DataBinding，初始化ViewModel */

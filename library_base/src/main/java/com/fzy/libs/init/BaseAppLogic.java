@@ -1,4 +1,4 @@
-package com.fzy.libs.app_init;
+package com.fzy.libs.init;
 
 
 import android.content.res.Configuration;

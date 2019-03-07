@@ -71,11 +71,11 @@ public class NetworkManager {
         // 初始化okhttp
         OkHttpClient client = new OkHttpClient.Builder()
 //                .retryOnConnectionFailure(true)//默认重试一次，若需要重试N次，则要实现拦截器。
-        .retryOnConnectionFailure(false)
-                .dns(new TimeOutDns(3000, TimeUnit.MILLISECONDS))  //DNS解析超时，如果不设置可能回出现在网络不可用的情况下，DNS解析时间太长
-                .connectTimeout(2000, TimeUnit.MILLISECONDS)       //IP连接超时
-                .readTimeout(3000, TimeUnit.MILLISECONDS)
-                .writeTimeout(3000, TimeUnit.MILLISECONDS)
+                .retryOnConnectionFailure(false)
+                .dns(new TimeOutDns(5000, TimeUnit.MILLISECONDS))  //DNS解析超时，如果不设置可能回出现在网络不可用的情况下，DNS解析时间太长
+                .connectTimeout(5000, TimeUnit.MILLISECONDS)       //IP连接超时
+                .readTimeout(15000, TimeUnit.MILLISECONDS)
+                .writeTimeout(20000, TimeUnit.MILLISECONDS)
 //                .addInterceptor(new ResponseInterceptor())
                 .addInterceptor(new LoggerInterceptor())
                 .addInterceptor(new HttpLoggingInterceptor())
@@ -92,6 +92,21 @@ public class NetworkManager {
         apiService = retrofit.create(ApiService.class);
     }
 
+
+    public <T> void doGetByRx(String url, Map<String, String> params, final BaseOberver<T> observer) {
+        apiService.rxGet(url, params)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .retry(0)//请求失败重试次数
+                .map(new ParseDataFuncation(observer))
+                .onErrorResumeNext(new NetErrorObserver<T>())
+                .subscribe(observer);
+    }
+
+    /**
+     * 测试get
+     */
     public <T> void doGetByRx(String url, Map<String, String> params,String jsonStr, final BaseOberver<T> observer) {
         apiService.rxGet(url, params)
                 .subscribeOn(Schedulers.io())

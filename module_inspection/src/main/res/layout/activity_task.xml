@@ -18,7 +18,7 @@
             android:id="@+id/btn_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="登陆"/>
+            android:text="ddddddds"/>
     </LinearLayout>
 </layout>
 

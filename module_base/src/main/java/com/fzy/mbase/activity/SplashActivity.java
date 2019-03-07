@@ -1,12 +1,12 @@
-package com.fzy.mbase.ui;
+package com.fzy.mbase.activity;
 
 
 import android.os.Bundle;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.fzy.libs.base.BaseActivity;
-import com.fzy.libs.router.RouterActivityPath;
+import com.fzy.libs.router.RouterPath;
 import com.fzy.mbase.R;
+import com.fzy.mbase.BR;
 import com.fzy.mbase.databinding.ActivitySplashBinding;
 import com.fzy.mbase.viewmodel.SplashViewModel;
 
@@ -14,7 +14,6 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 
 /**
  * Author: openXu
@@ -32,7 +31,7 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding, SplashVi
 
     @Override
     protected int getViewModelVariableId() {
-        return 0;
+        return BR.viewModel;
     }
 
     @Override
@@ -41,7 +40,7 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding, SplashVi
         Observable.timer(2, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
-                    startActivity(RouterActivityPath.Common.PAGE_LOGIN);
+                    startActivity(RouterPath.MBase.PAGE_LOGIN);
                     finish();
                 });
 

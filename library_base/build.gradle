@@ -3,26 +3,49 @@ apply plugin: 'com.android.library'
 android {
 
     compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
     defaultConfig {
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
-    }
 
+        //阿里路由框架配置
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [AROUTER_MODULE_NAME: project.getName(), AROUTER_GENERATE_DOC: "enable"]
+            }
+        }
+    }
+    compileOptions {
+        sourceCompatibility rootProject.ext.android.javaVersion
+        targetCompatibility rootProject.ext.android.javaVersion
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
-            buildConfigField "String", "baseUrl", rootProject.ext.appconfig.baseUrl
+            if (isBuildModule.toBoolean()) {
+                buildConfigField "String", "appType", rootProject.ext.libconfig.appType
+                buildConfigField "String", "baseUrl", rootProject.ext.libconfig.baseUrl
+            } else {
+                buildConfigField "String", "appType", rootProject.ext.appconfig.appType
+                buildConfigField "String", "baseUrl", rootProject.ext.appconfig.baseUrl
+            }
+
         }
 
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-
-            buildConfigField "String", "baseUrl", rootProject.ext.appconfig.baseUrl
+            if (isBuildModule.toBoolean()) {
+                buildConfigField "String", "appType", rootProject.ext.libconfig.appType
+                buildConfigField "String", "baseUrl", rootProject.ext.libconfig.baseUrl
+            } else {
+                buildConfigField "String", "appType", rootProject.ext.appconfig.appType
+                buildConfigField "String", "baseUrl", rootProject.ext.appconfig.baseUrl
+            }
         }
     }
 
@@ -75,8 +98,13 @@ dependencies {
     }
     annotationProcessor rootProject.ext.dependencies["glide-compiler"]
     //阿里路由框架
-    api rootProject.ext.dependencies["arouter-api"]
+    api (rootProject.ext.dependencies["arouter-api"]){
+        exclude group: 'com.android.support'
+    }
+    //组件中依赖阿里路由编译框架
+    annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
 
+    api rootProject.ext.dependencies["greendao"]
     //Dialog
 //    api 'com.afollestad.material-dialogs:core:2.0.3'
     api 'com.afollestad.material-dialogs:core:0.9.6.0'

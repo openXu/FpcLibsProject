@@ -1,11 +1,12 @@
 package com.fzy.libs.base;
 
 import android.app.Application;
-import android.content.Context;
 import android.content.res.Configuration;
 
-import com.fzy.libs.app_init.BaseAppLogic;
-import com.fzy.libs.app_init.ModuleInitManager;
+import com.fzy.libs.BuildConfig;
+import com.fzy.libs.init.BaseAppLogic;
+import com.fzy.libs.init.ModuleInitManager;
+import com.fzy.libs.utils.FLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,6 @@ import java.util.List;
 public abstract class BaseApplication extends Application {
 
     /**各module初始化类集合*/
-    private List<Class<? extends BaseAppLogic>> logicList = new ArrayList<>();
     private List<BaseAppLogic> logicClassList = new ArrayList<>();
 
     private static Application application;
@@ -28,9 +28,10 @@ public abstract class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         application = this;
-        //添加模块初始化类
-        logicList.addAll(ModuleInitManager.getInstance().getInitLogics());
         logicCreate();
+
+        FLog.i("Application被创建："+this);
+        FLog.i("appType："+BuildConfig.appType);
     }
 
     public static Application getApplication(){
@@ -38,16 +39,20 @@ public abstract class BaseApplication extends Application {
     }
 
     private void logicCreate(){
-        for(Class<? extends BaseAppLogic> logicClass : logicList){
+
+        for(String name : ModuleInitManager.initLogicNames){
             try{
                 //使用反射初始化调用
-                BaseAppLogic appLogic = logicClass.newInstance();
+                Class clazz = Class.forName(name);
+                BaseAppLogic appLogic = (BaseAppLogic)clazz.newInstance();
                 appLogic.setApplication(this);
                 logicClassList.add(appLogic);
                 appLogic.onCreate();
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }

@@ -4,8 +4,12 @@ if (isBuildModule.toBoolean()) {
 } else {
     apply plugin: 'com.android.library'       //作为组件运行
 }
+apply plugin: 'org.greenrobot.greendao' // apply plugin
+
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+
     defaultConfig {
         //如果是独立模块，则使用当前组件的包名 com.fzy.module.module_xxx
         if (isBuildModule.toBoolean()) {
@@ -18,7 +22,7 @@ android {
         //阿里路由框架配置
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = [AROUTER_MODULE_NAME: project.getName()]
+                arguments = [AROUTER_MODULE_NAME: project.getName(), AROUTER_GENERATE_DOC: "enable"]
             }
         }
     }
@@ -27,7 +31,7 @@ android {
         targetCompatibility rootProject.ext.android.javaVersion
     }
     //统一资源前缀，规范资源引用 module_xxx
-    resourcePrefix project.getName()+"_"
+//    resourcePrefix project.getName()+"_"
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
