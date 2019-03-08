@@ -1,6 +1,9 @@
 package com.fzy.mbase.bean;
 
-public class User{
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class User implements Parcelable {
 
     private String userName;
     private String password;
@@ -22,4 +25,32 @@ public class User{
     public void setPassword(String password) {
         this.password = password;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.userName);
+        dest.writeString(this.password);
+    }
+
+    protected User(Parcel in) {
+        this.userName = in.readString();
+        this.password = in.readString();
+    }
+
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel source) {
+            return new User(source);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 }

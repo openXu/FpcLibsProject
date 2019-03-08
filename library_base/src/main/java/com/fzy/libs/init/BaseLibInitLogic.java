@@ -3,6 +3,7 @@ package com.fzy.libs.init;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.fzy.libs.BuildConfig;
 import com.fzy.libs.utils.FLog;
+import com.squareup.leakcanary.LeakCanary;
 
 /**
  * Author: openXu
@@ -15,6 +16,13 @@ public class BaseLibInitLogic extends BaseAppLogic {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        if (LeakCanary.isInAnalyzerProcess(mApplication)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+//        LeakCanary.install(mApplication);
 
         //初始化阿里路由框架
         if (BuildConfig.DEBUG) {

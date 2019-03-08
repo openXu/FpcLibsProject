@@ -22,6 +22,11 @@ public class LoggerInterceptor implements Interceptor {
         Request request = chain.request();
         long t1 = System.nanoTime();//请求发起的时间
         FLog.i(String.format("发送请求 %s on %s%n%s",request.url(),chain.connection(),request.headers()));
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         Response response = chain.proceed(request);
 //        FLog.w("是否成功："+response.isSuccessful()+"   code="+response.code()+"   msg="+response.message());
         long t2 = System.nanoTime();//收到响应的时间

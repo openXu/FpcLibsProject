@@ -3,6 +3,7 @@ package com.fzy.mbase.activity;
 
 import android.os.Bundle;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.fzy.libs.base.BaseActivity;
 import com.fzy.libs.router.RouterPath;
 import com.fzy.mbase.R;
@@ -23,7 +24,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  */
 public class SplashActivity extends BaseActivity<ActivitySplashBinding, SplashViewModel> {
 
-
     @Override
     protected int getContentView(Bundle savedInstanceState) {
         return R.layout.activity_splash;
@@ -40,7 +40,7 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding, SplashVi
         Observable.timer(2, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
-                    startActivity(RouterPath.MBase.PAGE_LOGIN);
+                    ARouter.getInstance().build(RouterPath.MBase.PAGE_LOGIN).navigation();
                     finish();
                 });
 

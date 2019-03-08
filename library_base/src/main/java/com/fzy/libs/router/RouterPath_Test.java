@@ -13,6 +13,7 @@ public class RouterPath_Test {
     public static final String PAGE_MAIN_FRAGMENT_TEST = Test +"/fTest";
     public static final String PAGE_MAIN_FRAGMENT_BASE = Test +"/bTest";
     public static final String PAGE_MVVMTEST = Test +"/mvvmTest";
+    public static final String PAGE_LEAK = Test +"/LeakCanary";
     public static final String PAGE_NETTEST = Test +"/netTest";
 
 }

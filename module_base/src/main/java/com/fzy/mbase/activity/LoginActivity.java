@@ -31,7 +31,9 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
     protected void initData() {
         viewModel.user.observe(this, user -> {
             binding.setUser(user);
-            ARouter.getInstance().build(RouterPath.Common.PAGE_MAINSSS).navigation();
+            ARouter.getInstance().build(RouterPath.Common.PAGE_MAINSSS)
+                    .withParcelable("User", user).navigation();
+            finish();
         });
         binding.btnLogin.setOnClickListener(v->{
             String name = binding.etName.getText().toString().trim();

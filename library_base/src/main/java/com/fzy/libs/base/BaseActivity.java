@@ -69,14 +69,16 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
     protected void initView(){
         try{
             Toolbar toolbar = findViewById(R.id.toolBar);
-//            setTitleCenter(toolbar);
             //状态栏透明和间距处理
 //            StatusBarUtil.darkMode(this);   //状态栏字体变黑色（透明状态栏）
 //            StatusBarUtil.immersive(this);//全透明状态栏(状态栏字体默认白色)
-            StatusBarUtil.immersive(this, getResources().getColor(R.color.title_bar_color), 1);
+//            StatusBarUtil.immersive(this, getResources().getColor(R.color.title_bar_color), 1);
+            StatusBarUtil.immersive(this);
             StatusBarUtil.setPaddingSmart(this, toolbar);
 //            StatusBarUtil.setPaddingSmart(this, view);
 //            StatusBarUtil.setPaddingSmart(this, findViewById(R.id.blurView));
+
+//            setTitleCenter(toolbar);
 //            toolbar.setContentInsetStartWithNavigation(0);
             toolbar.setNavigationOnClickListener(v->finish());
 
@@ -139,7 +141,7 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
         //关联ViewModel
         binding.setVariable(viewModelId, viewModel);
         // TODO
-        binding.setLifecycleOwner(this);
+//        binding.setLifecycleOwner(this);
         //将ViewModel作为生命周期观测者，让其拥有View的生命周期感应.BaseViewModel实现了LifecycleObserver
         getLifecycle().addObserver(viewModel);
         //注入RxLifecycle生命周期
@@ -171,12 +173,6 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
                     dialog.dismiss();
             }
         });
-        viewModel.getUIEvent().event_startactivity.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String path) {
-                startActivity(path);
-            }
-        });
         //关闭界面
         viewModel.getUIEvent().event_finish.observe(this, new Observer<Void>() {
             @Override
@@ -186,14 +182,13 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
         });
     }
 
-    public void startActivity(String path){
-        ARouter.getInstance().build(path).navigation();
-    }
-
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        FLog.i("Activity.onDestroy");
+        if (dialog != null && dialog.isShowing())
+            dialog.dismiss();
         //解除ViewModel生命周期感应
         getLifecycle().removeObserver(viewModel);
         if(binding != null)

@@ -4,6 +4,7 @@
     <data>
         <!--1、申明基本类型变量，使用：binding.setName()-->
         <variable name="user" type="String"/>
+        <variable name="viewModel" type="com.fzy.minspection.viewmodel.TaskViewModel"/>
     </data>
 
     <LinearLayout

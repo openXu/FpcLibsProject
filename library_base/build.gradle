@@ -105,6 +105,11 @@ dependencies {
     annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
 
     api rootProject.ext.dependencies["greendao"]
+
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
+
+
     //Dialog
 //    api 'com.afollestad.material-dialogs:core:2.0.3'
     api 'com.afollestad.material-dialogs:core:0.9.6.0'

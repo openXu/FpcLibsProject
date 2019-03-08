@@ -46,11 +46,6 @@ public class NetworkManager {
     private static class SingletonHolder{
         private static final NetworkManager INSTANCE = new NetworkManager();
     }
-   /* public static NetworkManager getInstance(Context context){
-        if(SingletonHolder.INSTANCE.context == null)
-            SingletonHolder.INSTANCE.context = context.getApplicationContext();
-        return SingletonHolder.INSTANCE;
-    }*/
     public static NetworkManager getInstance(){
        return SingletonHolder.INSTANCE;
    }

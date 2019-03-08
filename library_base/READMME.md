@@ -37,6 +37,10 @@ https://github.com/afollestad/material-dialogs
 ## 4、刷新
 https://github.com/scwang90/SmartRefreshLayout/tree/master
 
+
+## 5、内存泄漏检测
+[LeakCanary](https://github.com/square/leakcanary) 是 Square 出品的专门用来检测 Android 和 Java 的内存泄漏，并通过通知栏提示内存泄漏信息.
+
 ## Data Binding
 
 > 开启Data Binding：在Module的build.gradle中添加下面配置即可

@@ -3,12 +3,14 @@ package com.fzy.libs.base;
 import android.app.Application;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.fzy.libs.utils.FLog;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
+import io.reactivex.disposables.CompositeDisposable;
 
 /**
  * Author: openXu
@@ -63,6 +65,9 @@ import androidx.lifecycle.MutableLiveData;
 public class BaseViewModel extends AndroidViewModel implements IBaseViewModel{
 
     private UIEvent uiEvent;
+
+    protected CompositeDisposable mDisposable = new CompositeDisposable();
+
     public BaseViewModel(@NonNull Application application) {
         super(application);
     }
@@ -79,9 +84,6 @@ public class BaseViewModel extends AndroidViewModel implements IBaseViewModel{
     }
     public void dismissDialog() {
         uiEvent.event_dialog_dismiss.setValue(null);
-    }
-    public void startActivity(String path){
-        ARouter.getInstance().build(path).navigation();
     }
 
     public void finish() {
@@ -127,5 +129,8 @@ public class BaseViewModel extends AndroidViewModel implements IBaseViewModel{
     @Override
     protected void onCleared() {
         super.onCleared();
+        FLog.i("Activity，viewmodel释放资源，终止网络请求mDisposable："+mDisposable.size());
+        mDisposable.clear();
+        mDisposable = null;
     }
 }

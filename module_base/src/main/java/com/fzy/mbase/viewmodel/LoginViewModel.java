@@ -42,11 +42,10 @@ public class LoginViewModel extends BaseViewModel {
         FzyResponse response = new FzyResponse(100, "请求成功", new User("name", "psw"));
 
 
-        params.put("command", "打开巡查页面");
-        NetworkManager.getInstance().doGetByRx("VoiceControl.aspx", params, new Gson().toJson(response), new BaseOberver<User>() {
-
-//        params.put("companyId", "e3c6f838-13df-11e9-bf3a-fa163e4635ff");
-//        NetworkManager.getInstance().doGetByRx("demo", params, new Gson().toJson(response), new BaseOberver<User>() {
+//        params.put("command", "打开巡查页面");
+//        NetworkManager.getInstance().doGetByRx("VoiceControl.aspx", params, new Gson().toJson(response), new BaseOberver<User>() {
+        params.put("companyId", "e3c6f838-13df-11e9-bf3a-fa163e4635ff");
+        NetworkManager.getInstance().doGetByRx("demo", params, new Gson().toJson(response), new BaseOberver<User>() {
             @Override
             public void onStart() { showDialog();}
             @Override
