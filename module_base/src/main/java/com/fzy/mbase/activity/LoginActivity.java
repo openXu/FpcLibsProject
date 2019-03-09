@@ -4,9 +4,12 @@ import android.os.Bundle;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.fzy.libs.BuildConfig;
 import com.fzy.libs.base.BaseActivity;
+import com.fzy.libs.config.AppTypes;
 import com.fzy.libs.router.RouterPath;
 
+import com.fzy.libs.utils.FLog;
 import com.fzy.mbase.R;
 import com.fzy.mbase.BR;
 import com.fzy.mbase.databinding.ActivityLoginBinding;
@@ -31,9 +34,13 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
     protected void initData() {
         viewModel.user.observe(this, user -> {
             binding.setUser(user);
-            ARouter.getInstance().build(RouterPath.Common.PAGE_MAINSSS)
-                    .withParcelable("User", user).navigation();
-            finish();
+
+            //如果是测试app（使用AppTypes.TYPE_TEST == AppTypes.valueOf(BuildConfig.appType)判断版本）
+            if(AppTypes.TYPE_TEST == AppTypes.valueOf(BuildConfig.appType)) {
+                ARouter.getInstance().build(RouterPath.Common.PAGE_MAINSSS)
+                        .withParcelable("User", user).navigation();
+                finish();
+            }
         });
         binding.btnLogin.setOnClickListener(v->{
             String name = binding.etName.getText().toString().trim();

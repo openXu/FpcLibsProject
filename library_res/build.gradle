@@ -1,0 +1,8 @@
+apply plugin: 'com.android.library'
+android {
+    rootProject.ext.setAndroidConfig android
+}
+dependencies {
+}
+
+

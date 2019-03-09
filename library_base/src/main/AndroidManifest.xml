@@ -3,8 +3,18 @@
     package="com.fzy.libs">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
     <application>
+
+        <!--组件module单独运行时的启动页面（简单的登陆），非单独运行时需要注释，否则桌面上会出现两个启动图标（app中有一个）-->
+      <!--  <activity
+            android:name=".debug.DebugLoginActivity"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>-->
+
         <activity android:name=".utils.notifycation.NotifyActivity"></activity>
     </application>
 

@@ -3,16 +3,14 @@ package com.fzy.mbase.viewmodel;
 import android.app.Application;
 
 import com.fzy.libs.base.BaseViewModel;
-import com.fzy.libs.http.NetworkManager;
-import com.fzy.libs.http.data.FzyResponse;
-import com.fzy.libs.http.rx.BaseOberver;
+import com.fzy.libs.net.NetworkManager;
+import com.fzy.libs.net.data.FzyResponse;
+import com.fzy.libs.net.rx.BaseOberver;
 import com.fzy.libs.utils.FLog;
 import com.fzy.mbase.bean.User;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.NonNull;

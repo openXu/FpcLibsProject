@@ -1,53 +1,136 @@
 ext {
-    def appTypes = ["\"test\"", "\"apk1\"","\"apk2\"","\"apk3\""]
+
+    //需要一个全局变量来控制当前运行的工程是隔离状态还是合并状态
+    //isBuildModule 为 true 时可以使每个组件独立运行，false 则可以将所有组件集成到宿主 App 中。
+    isBuildModule=false
+
     libconfig = [
-            appTypearr        : appTypes,
-            appType        : appTypes[1],    //用于区分app具体属于那个版本，方便模块中相关分支判断
+            appType        : "\"TYPE_MODULE\"",    //用于区分app具体属于那个版本，方便模块中相关分支判断
             baseUrl        : "\"http://47.105.168.178:8030/railway/\"",
     ]
-    android = [
-            applicationId : "com.fzy.module",
-            javaVersion : JavaVersion.VERSION_1_8,
-            buildToolsVersion :'28.0.3',
-            compileSdkVersion: 28,
-            targetSdkVersion: 28,
-            minSdkVersion    :  16,
-            versionCode      : 1,
-            versionName      : '1.0.0',
-            VSupportSdk      : '28.0.0'
-    ]
 
+    VSupportSdk  = '28.0.0'
     dependencies = [
 
-            'support-v4'              : "com.android.support:support-v4:${android["VSupportSdk"]}",
-            'appcompat-v7'            : "com.android.support:appcompat-v7:${android["VSupportSdk"]}",
-            'recyclerview-v7'         : "com.android.support:recyclerview-v7:${android["VSupportSdk"]}",
-            'design'                  : "com.android.support:design:${android["VSupportSdk"]}",
-            //Google AAC  latest.release
-            "lifecycle-extensions"    : "androidx.lifecycle:lifecycle-extensions:2.0.0",
-            "lifecycle-compiler"      : "androidx.lifecycle:lifecycle-compiler:2.0.0",
-            //ARouter路由
-            "arouter-api"       : "com.alibaba:arouter-api:1.4.1",
-            "arouter-compiler"  : "com.alibaba:arouter-compiler:1.2.2",
-            //EventBus事件发布和订阅框架
-            "eventbus"         : "org.greenrobot:eventbus:3.0.0",
-            //RX
-            "rxjava"         : "io.reactivex.rxjava2:rxjava:2.1.0",
-            "rxandroid"         : "io.reactivex.rxjava2:rxandroid:2.0.1",
-            //网络框架
-//            "okhttp"           : "com.squareup.okhttp3:okhttp:3.12.1",
-            "logging-interceptor" : 'com.squareup.okhttp3:logging-interceptor:3.4.1',
-            "retrofit"         : "com.squareup.retrofit2:retrofit:2.5.0",
-            "converter"        : "com.squareup.retrofit2:converter-gson:2.3.0",   //数据解析器
-            "adapter-rxjava"   : "com.squareup.retrofit2:adapter-rxjava2:2.3.0",   //网络请求适配器
-            //数据库greenDao
-            "greendao"         :  "org.greenrobot:greendao:3.2.2",
-            //glide图片加载
-            "glide"                 : "com.github.bumptech.glide:glide:4.8.0",
-            "glide-compiler"        : "com.github.bumptech.glide:compiler:4.8.0",
-
-
+        //            'support-v4'              : "com.android.support:support-v4:${VSupportSdk}",
+        //            'appcompat-v7'            : "com.android.support:appcompat-v7:${VSupportSdk}",
+        //            'recyclerview-v7'         : "com.android.support:recyclerview-v7:${VSupportSdk}",
+        //            'design'                  : "com.android.support:design:${VSupportSdk}",
+        'appcompat'                  : "androidx.appcompat:appcompat:1.0.0-alpha1",
+        'material'                  : "com.google.android.material:material:1.0.0-alpha1",
+        //Google AAC  latest.release
+        "lifecycle-extensions"    : "androidx.lifecycle:lifecycle-extensions:2.0.0",
+        "lifecycle-compiler"      : "androidx.lifecycle:lifecycle-compiler:2.0.0",
+        //ARouter路由
+        "arouter-api"       : "com.alibaba:arouter-api:1.4.1",
+        "arouter-compiler"  : "com.alibaba:arouter-compiler:1.2.2",
+        //EventBus事件发布和订阅框架
+        "eventbus"         : "org.greenrobot:eventbus:3.0.0",
+        //RX
+        "rxjava"         : "io.reactivex.rxjava2:rxjava:2.1.0",
+        "rxandroid"         : "io.reactivex.rxjava2:rxandroid:2.0.1",
+        //网络框架
+        //            "okhttp"           : "com.squareup.okhttp3:okhttp:3.12.1",
+        "logging-interceptor" : 'com.squareup.okhttp3:logging-interceptor:3.4.1',
+        "retrofit"         : "com.squareup.retrofit2:retrofit:2.5.0",
+        "converter"        : "com.squareup.retrofit2:converter-gson:2.3.0",   //数据解析器
+        "adapter-rxjava"   : "com.squareup.retrofit2:adapter-rxjava2:2.3.0",   //网络请求适配器
+        //数据库greenDao
+        "greendao"         :  "org.greenrobot:greendao:3.2.2",
+        //glide图片加载
+        "glide"                 : "com.github.bumptech.glide:glide:4.8.0",
+        "glide-compiler"        : "com.github.bumptech.glide:compiler:4.8.0",
     ]
+
+    /*android基础配置*/
+    setAndroidConfig = {
+        extension ->  //闭包参数extension相当于android对象
+            extension.compileSdkVersion 28
+            extension.buildToolsVersion '28.0.3'
+            extension.defaultConfig {
+                minSdkVersion 16
+                targetSdkVersion 28
+                versionCode 1
+                versionName '1.0.0'
+                javaCompileOptions {
+                    annotationProcessorOptions {
+                        includeCompileClasspath = true
+                    }
+                }
+                //阿里路由框架配置
+                javaCompileOptions {
+                    annotationProcessorOptions {
+                        arguments = [AROUTER_MODULE_NAME: project.getName(), AROUTER_GENERATE_DOC: "enable"]
+                    }
+                }
+            }
+            extension.compileOptions {
+                sourceCompatibility JavaVersion.VERSION_1_8
+                targetCompatibility JavaVersion.VERSION_1_8
+            }
+            //开启Data Binding
+            extension.dataBinding {
+                enabled = true
+            }
+            //统一资源前缀，规范资源引用 module_xxx
+//    extension.resourcePrefix project.getName()+"_"
+    }
+
+    /*组件module源码路径配置（如果组件中有debug相关的源码需要排除）*/
+    setSrcConfig = {
+        extension ->  //闭包参数extension相当于android对象
+            extension.sourceSets {
+                main {
+                    jniLibs.srcDirs = ['libs']
+                    if (rootProject.ext.isBuildModule) {
+                        //独立运行
+//                manifest.srcFile 'src/main/alone/AndroidManifest.xml'
+                    } else {
+                        //合并到宿主
+//                manifest.srcFile 'src/main/AndroidManifest.xml'
+                        resources {
+                            //正式版本时，排除alone文件夹下所有调试文件
+//                    exclude 'src/main/alone/*'
+                            //正式版本时，排除debug文件夹下所有调试文件
+                            exclude 'src/debug/*'
+                        }
+                    }
+                }
+            }
+    }
+
+
+    /**库mudle中buildConfig配置*/
+    setBuildConfig = {
+        extension ->  //闭包参数extension相当于android对象
+            extension.buildTypes {
+                release {
+                    minifyEnabled false
+                    proguardFiles extension.getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+                    if (isBuildModule.toBoolean()) {
+                        buildConfigField "String", "appType", rootProject.ext.libconfig.appType
+                        buildConfigField "String", "baseUrl", rootProject.ext.libconfig.baseUrl
+                    } else {
+                        buildConfigField "String", "appType", rootProject.ext.appconfig.appType
+                        buildConfigField "String", "baseUrl", rootProject.ext.appconfig.baseUrl
+                    }
+                }
+
+                debug {
+                    minifyEnabled false
+                    proguardFiles extension.getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+                    if (isBuildModule.toBoolean()) {
+                        buildConfigField "String", "appType", rootProject.ext.libconfig.appType
+                        buildConfigField "String", "baseUrl", rootProject.ext.libconfig.baseUrl
+                    } else {
+                        buildConfigField "String", "appType", rootProject.ext.appconfig.appType
+                        buildConfigField "String", "baseUrl", rootProject.ext.appconfig.baseUrl
+                    }
+                }
+            }
+    }
 
 
 }

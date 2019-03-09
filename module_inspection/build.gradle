@@ -1,5 +1,5 @@
 apply from: "../module.build.gradle"
-
+apply plugin: 'org.greenrobot.greendao' // apply plugin
 greendao {
     schemaVersion 1//数据库版本号
     daoPackage 'com.fzy.minspection.dao'//设置DaoMaster、DaoSession、Dao包名

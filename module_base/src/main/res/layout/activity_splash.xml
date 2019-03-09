@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@mipmap/bg_splash"
+        android:background="@mipmap/libres_bg_splash"
         android:gravity="center"
         android:orientation="vertical">
 

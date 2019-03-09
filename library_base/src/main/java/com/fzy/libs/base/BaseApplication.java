@@ -4,8 +4,8 @@ import android.app.Application;
 import android.content.res.Configuration;
 
 import com.fzy.libs.BuildConfig;
-import com.fzy.libs.init.BaseAppLogic;
-import com.fzy.libs.init.ModuleInitManager;
+import com.fzy.libs.module.BaseAppLogic;
+import com.fzy.libs.module.ModuleInitManager;
 import com.fzy.libs.utils.FLog;
 
 import java.util.ArrayList;

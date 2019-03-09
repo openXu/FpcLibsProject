@@ -68,7 +68,7 @@
               android:layout_height="wrap_content"
               android:layout_alignParentBottom="true"
               android:textColor="#ffffff"
-              android:background="@mipmap/btn_login"
+              android:background="@mipmap/libres_btn_login"
               android:text="登陆"/>
       </RelativeLayout>
 

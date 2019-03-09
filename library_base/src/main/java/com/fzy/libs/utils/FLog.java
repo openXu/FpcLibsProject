@@ -3,6 +3,8 @@ package com.fzy.libs.utils;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.fzy.libs.BuildConfig;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -118,6 +120,10 @@ public class FLog {
 
     private static void printLog(int type, String tagStr, Object objectMsg) {
         String msg;
+        if(!BuildConfig.DEBUG){
+            Log.w("Log","非debugm模式，不打印");
+            return;
+        }
         if (!IS_SHOW_LOG) {
             return;
         }

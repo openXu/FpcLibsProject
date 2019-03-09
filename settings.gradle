@@ -1,1 +1,1 @@
-include ':library_db', ':library_base', ':module_base', ':module_inspection'
+include ':library_base', ':library_db', ':library_res', ':module_base', ':module_inspection'
